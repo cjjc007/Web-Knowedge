@@ -33,7 +33,8 @@ mvc 和 mvvm 区别并不大，主要就是 mvc 中 Controller 演变成 mvvm �
 * React Native能在手机上创建原生应用，React在这方面处于领先位置。使用JavaScript, CSS和HTML创建原生移动应用，这是一个重要的革新。Vue社区与阿里合作开发Vue版的React Native——Weex也很不错，但还需经历时间的验证吧。
 
 ## 对 vue 生命周期的理解
-总共分为 8 个阶段创建前/后，载入前/后，更新前/后，销毁前/后。  
+Vue 实例从创建到销毁的过程，就是生命周期。  
+也就是从开始创建、初始化数据、编译模板、挂载Dom→渲染、更新→渲染、卸载等一系列过程，我们称这是 Vue 的生命周期，总共分为 8 个阶段创建前/后，载入前/后，更新前/后，销毁前/后。  
 
 * 创建前/后： 在 beforeCreate 阶段，vue 实例的挂载元素 el 还没有。
 * 载入前/后：在 beforeMount 阶段，vue 实例的$el 和 data 都初始化了，但还是挂载之前为虚拟的 dom 节点，data.message 还未替换。在 mounted 阶段，vue * 实例挂载完成，data.message 成功渲染。
