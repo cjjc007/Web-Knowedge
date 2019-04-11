@@ -18,3 +18,15 @@ ViewModel 通过双向数据绑定把 View 层和 Model 层连接了起来，而
 
 ### MVC和MVVM的区别
 mvc 和 mvvm 区别并不大，主要就是 mvc 中 Controller 演变成 mvvm 中的 viewModel。mvvm 主要解决了 mvc 中大量的 DOM 操作使页面渲染性能降低，加载速度变慢，影响用户体验，以及当 Model 频繁发生变化，开发者需要主动更新到 View 的问题；mvvm 中开发者只需对数据进行操作就可以。
+
+## Vue 和 React
+### 相似之处：
+* 都使用 Virtual DOM
+* 组件化思想
+* react和vue都有props的概念，允许父子组件通过props进行传值
+* react和vue都有自己的构建工具、状态管理、UI、路由等工具
+
+### 不同之处:
+* vue鼓励你去写近似常见的HTML模板，写起来很接近标准的HTML，只是多了一些属性；react推荐你所有的模板Javascript的语法扩展JSX语法；但是需要注意的是vue在技术上也是支持Render函数和JSX，只是不是默认的而已
+* vue中state不是必须的，数据由data属性在vue对象中进行管理，data就是应用中数据的保存者，可以直接修改；react中的state在应用中是不可变的，意味着它不能直接被修改，需要通过SetState方法进行更新
+* vue应用广泛，目前很火的框架，关注的人很多，2014年2月正式发布；react社区庞大，目前很流行的框架，背后有FaceBook撑腰，发布的时间比vue更早，2013年3月发布，在生产方面经过了很好的测试
