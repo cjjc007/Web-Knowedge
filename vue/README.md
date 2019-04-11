@@ -36,13 +36,9 @@ mvc 和 mvvm 区别并不大，主要就是 mvc 中 Controller 演变成 mvvm �
 Vue 实例从创建到销毁的过程，就是生命周期。  
 也就是从开始创建、初始化数据、编译模板、挂载Dom→渲染、更新→渲染、卸载等一系列过程，我们称这是 Vue 的生命周期，总共分为 8 个阶段创建前/后，载入前/后，更新前/后，销毁前/后。  
 
-* 创建前/后： 在 beforeCreate 阶段，vue 实例的挂载元素 el 还没有。
-* 载入前/后：在 beforeMount 阶段，vue 实例的$el 和 data 都初始化了，但还是挂载之前为虚拟的 dom 节点，data.message 还未替换。在 mounted 阶段，vue * 实例挂载完成，data.message 成功渲染。
-* 更新前/后：当 data 变化时，会触发 beforeUpdate 和 updated 方法。
-* 销毁前/后：在执行 destroy 方法后，对 data 的改变不会再触发周期函数，说明此时 vue 实例已经解除了事件监听以及和 dom 的绑定，但是 dom 结构依然存在
 * beforeCreate  实例创建前：这个阶段实例的data、method是读不到的。
 * created  实例创建后：这个节点已经完成了数据观测，属性和方法的运算，watch/event事件回调。mount挂载阶段还没开始，$el属性目前不可见，数据并没有在DOM元素上进行渲染。
->应用：进行ajax请求异步数据的获取、初始化数据。
+> 应用：进行ajax请求异步数据的获取、初始化数据。
 * beforeMount  在挂在开始之前被调用：相关的render函数首次被调用。
 * mounted  el选项的DOM节点被新创建的vm.$el替换，并挂载到实例上去之后调用此生命周期函数。此时实例的数据在DOM节点上进行渲染。
 >应用：挂载元素内DOM结点的获取。
