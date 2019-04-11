@@ -1,5 +1,5 @@
-# 对设计模式的理解
-## 什么是MVC(Model-View-Controller)
+### 对设计模式的理解
+### 什么是MVC(Model-View-Controller)
 Model(模型):数据层，负责存储数据  
 View(视图):展现层，用户所看到的页面  
 Controller(控制器):协调层，负责协调Model和View，根据用户在View上的动作在Model上作出对应的更改，同时将更改的信息返回到View上  
@@ -7,7 +7,7 @@ Controller(控制器):协调层，负责协调Model和View，根据用户在View
 三者之间的关系:  
 Controller可以直接访问Model，也可以直接控制View,但是Model和View不能相互通信，相当于COntroller就是介于这两者之间的协调者。
 
-## 什么是MVVM(Model-View-ViewModel)
+### 什么是MVVM(Model-View-ViewModel)
 Model 层代表数据模型，可以在 Model 中定义数据修改和操作的业务逻辑  
 View 代表UI组件，它负责将数据模型转化成 UI 展现出来  
 ViewModel 是一个同步 View 和 Model 的对象  
