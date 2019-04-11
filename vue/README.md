@@ -19,7 +19,6 @@ ViewModel 通过双向数据绑定把 View 层和 Model 层连接了起来，而
 ### MVC和MVVM的区别
 mvc 和 mvvm 区别并不大，主要就是 mvc 中 Controller 演变成 mvvm 中的 viewModel。mvvm 主要解决了 mvc 中大量的 DOM 操作使页面渲染性能降低，加载速度变慢，影响用户体验，以及当 Model 频繁发生变化，开发者需要主动更新到 View 的问题；mvvm 中开发者只需对数据进行操作就可以。
 
-
 ## Vue 和 React
 ### 相似之处：
 * 都使用 Virtual DOM。
@@ -32,3 +31,11 @@ mvc 和 mvvm 区别并不大，主要就是 mvc 中 Controller 演变成 mvvm �
 * vue中state不是必须的，数据由data属性在vue对象中进行管理，data就是应用中数据的保存者，可以直接修改；react中的state在应用中是不可变的，意味着它不能直接被修改，需要通过SetState方法进行更新。
 * vue应用广泛，目前很火的框架，关注的人很多，2014年2月正式发布；react社区庞大，目前很流行的框架，背后有FaceBook撑腰，发布的时间比vue更早，2013年3月发布，在生产方面经过了很好的测试。
 * React Native能在手机上创建原生应用，React在这方面处于领先位置。使用JavaScript, CSS和HTML创建原生移动应用，这是一个重要的革新。Vue社区与阿里合作开发Vue版的React Native——Weex也很不错，但还需经历时间的验证吧。
+
+## 对 vue 生命周期的理解
+总共分为 8 个阶段创建前/后，载入前/后，更新前/后，销毁前/后。  
+
+* 创建前/后： 在 beforeCreate 阶段，vue 实例的挂载元素 el 还没有。
+* 载入前/后：在 beforeMount 阶段，vue 实例的$el 和 data 都初始化了，但还是挂载之前为虚拟的 dom 节点，data.message 还未替换。在 mounted 阶段，vue * 实例挂载完成，data.message 成功渲染。
+更新前/后：当 data 变化时，会触发 beforeUpdate 和 updated 方法。
+* 销毁前/后：在执行 destroy 方法后，对 data 的改变不会再触发周期函数，说明此时 vue 实例已经解除了事件监听以及和 dom 的绑定，但是 dom 结构依然存在
