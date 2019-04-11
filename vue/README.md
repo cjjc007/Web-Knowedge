@@ -1,4 +1,4 @@
-### 对设计模式的理解
+## 对设计模式的理解
 ### 什么是MVC(Model-View-Controller)
 Model(模型):数据层，负责存储数据  
 View(视图):展现层，用户所看到的页面  
@@ -15,3 +15,6 @@ ViewModel 是一个同步 View 和 Model 的对象
 在 MVVM 架构下，View 和 Model 之间并没有直接的联系，而是通过 ViewModel 进行交互，Model 和 ViewModel 之间的交互是双向的， 因此 View 数据的变化会同步到 Model 中，而 Model 数据的变化也会立即反应到 View 上。  
 
 ViewModel 通过双向数据绑定把 View 层和 Model 层连接了起来，而 View 和 Model 之间的同步工作完全是自动的，无需人为干涉，因此开发者只需关注业务逻辑，不需要手动操作 DOM, 不需要关注数据状态的同步问题，复杂的数据状态维护完全由 MVVM 来统一管理。
+
+### MVC和MVVM的区别
+mvc 和 mvvm 区别并不大，主要就是 mvc 中 Controller 演变成 mvvm 中的 viewModel。mvvm 主要解决了 mvc 中大量的 DOM 操作使页面渲染性能降低，加载速度变慢，影响用户体验，以及当 Model 频繁发生变化，开发者需要主动更新到 View 的问题；mvvm 中开发者只需对数据进行操作就可以。
