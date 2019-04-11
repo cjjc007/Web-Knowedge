@@ -19,6 +19,7 @@ ViewModel 通过双向数据绑定把 View 层和 Model 层连接了起来，而
 ### MVC和MVVM的区别
 mvc 和 mvvm 区别并不大，主要就是 mvc 中 Controller 演变成 mvvm 中的 viewModel。mvvm 主要解决了 mvc 中大量的 DOM 操作使页面渲染性能降低，加载速度变慢，影响用户体验，以及当 Model 频繁发生变化，开发者需要主动更新到 View 的问题；mvvm 中开发者只需对数据进行操作就可以。
 
+
 ## Vue 和 React
 ### 相似之处：
 * 都使用 Virtual DOM。
