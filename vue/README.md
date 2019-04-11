@@ -51,5 +51,74 @@ Vue 实例从创建到销毁的过程，就是生命周期。
 ## 父子组件间的通信
 ### 父组件向子组件传值
 ```javascript
-function(){}
+//父组件通过标签上面定义传值
+<template>
+    <Child :obj="msg"></Child>
+</template>
+<script>
+    //引入子组件
+    import Child form "./child"
+
+    exprot default{
+        name:"parent",
+        data(){
+            return {
+                msg:"要向子组件传递的数据"
+            }
+        },
+        //初始化组件
+        components:{
+            Child
+        }
+    }
+</script>
+
+
+//子组件通过props方法接受数据
+<template>
+    <h2>子组件</h2>
+    <div>{{msg}}</div>
+</template>
+<script>
+    exprot default{
+        name:"child",
+        //接受父组件传值
+        props:["msg"]
+    }
+</script>
+```
+### 子组件向父组件传值
+```javascript
+//父组件向子组件传递事件方法，子组件通过$emit方法触发时间，回调给父组件  
+<template>
+   <child @msgfunc="func"></child>
+</template>
+<script>
+    //引入子组件
+    import Child form "./child"
+
+    exprot default{
+        methods:{
+            func(msg){}
+        },
+        components:{
+            Child
+        }
+    }
+</script>
+
+//子组件
+<template>
+    <button @click='handleClick'>点我</button>
+</template>
+<script>
+    exprot default{
+        name:"child",
+        methods(){
+            handleClick(){
+                this.$emit('msgfunc')
+            }
+        }
+    }
+</script>
 ```
