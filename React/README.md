@@ -1,3 +1,4 @@
+## React学习笔记
 ### React编程特点
 * 声明式开发： 面向数据编程，只需负责数据就可以，react自己会负责DOM的操作，减少DOM操作过程的代码量。
 * 与其他框架共存： 例如react只负责入口文件里面id=root的那部分内容的DOM渲染，其他内容可由其他框架负责。
@@ -10,9 +11,9 @@
 
 ### propTypes和defaultProps
 例子：const { content } = this.props;
-propTypes: 属性接收的校验，父组件不能乱传东西  
-步骤： 1.import PropTypes from 'prop-types';  
->>2.在后面进行验证  
+propTypes: 进行属性接收的校验，父组件不能乱传东西  
+步骤： 1.引入：import PropTypes from 'prop-types';  
+      2.在调用了之后进行验证  
 ```javascript
 TodoItem.protoType = {
   content: PropTypes.string，
@@ -52,17 +53,23 @@ defaultProps: = {
 7.找出input框发生的变化  
 8.只用新的DOM中的input元素，替换老的DOM中的input元素  
 
-#### 虚拟DOM： 从比较DOM —> 比较JS对象
+#### 方案三：虚拟DOM（从比较DOM —> 比较JS对象）
 1.state: 数据  
 2.JSX 模板  
 3.数据 + 模板 结合，来生成真实的DOM 来显示  
+```javascript
     <div id="aaa"><span>hello world</span></div>  
+```
 4.生成虚拟DOM （虚拟DOM是一个JS对象，用它来描述真实的DOM）——> 也有消耗，但小：创建js对象简单，创建dom难  
+```javascript
     ['div',{id:'aaa'}, ['span',{},'hello world']]  
-    [ dom标签名称  属性  内容（child）- 也是一个DOM ]  
+    [ 'dom标签名称',{属性},[内容(child)-也是一个DOM]] 
+```
 5.state 发生变化  
 6.数据 + 模板  生成新的虚拟DOM ——> 极大提升性能  
+```javascript
     ['div',{id:'aaa'}, ['span',{},'changed hahaha']]   
+```
 7.比较两个虚拟DOM的区别，找到区别是span内容 ——> 对比操作的是js对象，提升性能  
 8.直接操作DOM，修改span内容  
 
@@ -71,11 +78,14 @@ defaultProps: = {
 
 真实情况是先4步在3步： 
 4.数据 + 模板 生成虚拟DOM （虚拟DOM是一个JS对象，用它来描述真实的DOM）—> 也有消耗，但小：创建js对象简单，创建dom难  
+```javascript
     ['div',{id:'aaa'}, ['span',{},'hello world']]  
-    [ dom标签名称  属性  内容（child）- 也是一个DOM ]  
+    [ dom标签名称, 属性, 内容(child)-也是一个DOM ]  
+```
 3.用虚拟DOM的结构 来生成真实的DOM 来显示  
+```javascript
     <div id="aaa"><span>hello world</span></div>  
-
+```
 render里面只是一个JSX模板 ，先生成JS对象 ，再生成真实DOM   
 ```javascript
 render() {
@@ -88,11 +98,11 @@ render() {
     return React.createElement('div', {}, React.createElement('span',{},'item'));
   }
 ```
-优点：
-1.性能提升
-2.使跨端应用得以实现————React Native
-  移动端没有真实dom————原生应用中把虚拟DOM转化为原生的应用组件
-  网页才是转化为真实的DOM
+优点：  
+1.性能提升  
+2.使跨端应用得以实现————React Native  
+  移动端没有真实dom————原生应用中把虚拟DOM转化为原生的应用组件  
+  网页才是转化为真实的DOM  
 
 
 ### 虚拟DOM的Diff（diffrence）算法简单介绍：
@@ -108,16 +118,18 @@ key值不要用index————节点发生变化的时候导致key值不稳定
 
 #### React中的 ref
 React中的 ref 帮助我们直接获取DOM元素（尽量少用）  
+```javascript
 setState有两个参数 this.setState(()=>{},()=>{
     //回调函数，前面的执行完在执行这里，解决setState异步时间差问题
     //要获取页面更新后的DOM是，放在这里
 })
+```
 
 
 ### React生命周期函数：指在某一时刻组件会自动执行的函数
-（每个组件都有自己的生命周期函数）
+（每个组件都有自己的生命周期函数）  
 
-initialization(初始化)：setup props and state  
+initialization(初始化)：setup props and state   
 mounting(挂载)：  
     componentWillMount(){} ： 在组件即将被挂载到页面是自动执行，只执行一次  
     render(){} :更新页面  
