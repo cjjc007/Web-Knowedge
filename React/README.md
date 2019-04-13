@@ -53,7 +53,7 @@ defaultProps: = {
 7.找出input框发生的变化  
 8.只用新的DOM中的input元素，替换老的DOM中的input元素  
 
-#### 方案三：虚拟DOM（从比较DOM —> 比较JS对象）
+#### 方案3：虚拟DOM（从比较DOM —> 比较JS对象）
 1.state: 数据  
 2.JSX 模板  
 3.数据 + 模板 结合，来生成真实的DOM 来显示  
@@ -76,8 +76,8 @@ defaultProps: = {
 
 ### 深入理解虚拟DOM
 
-真实情况是先4步在3步： 
-4.数据 + 模板 生成虚拟DOM （虚拟DOM是一个JS对象，用它来描述真实的DOM）—> 也有消耗，但小：创建js对象简单，创建dom难  
+真实情况是先4步在3步:  
+4.数据 + 模板 生成虚拟DOM （虚拟DOM是一个JS对象，用它来描述真实的DOM）—> 也有消耗，但小：创建js对象简单，创建dom难   
 ```javascript
     ['div',{id:'aaa'}, ['span',{},'hello world']]  
     [ dom标签名称, 属性, 内容(child)-也是一个DOM ]  
@@ -116,7 +116,7 @@ setState是异步的设计初衷———连续几个setState会合并成一个�
 key值会提高对比的速度————可以用item  
 key值不要用index————节点发生变化的时候导致key值不稳定，会变化  
 
-#### React中的 ref
+### React中的 ref
 React中的 ref 帮助我们直接获取DOM元素（尽量少用）  
 ```javascript
 setState有两个参数 this.setState(()=>{},()=>{
@@ -128,31 +128,35 @@ setState有两个参数 this.setState(()=>{},()=>{
 
 ### React生命周期函数：指在某一时刻组件会自动执行的函数
 （每个组件都有自己的生命周期函数）  
+```javascript
+initialization(初始化)：setup props and state 
 
-initialization(初始化)：setup props and state   
 mounting(挂载)：  
     componentWillMount(){} ： 在组件即将被挂载到页面是自动执行，只执行一次  
     render(){} :更新页面  
-    componentDidMount(){}  : 组件被挂载到页面的时候会自动执行，只执行一次  
+    componentDidMount(){}  : 组件被挂载到页面的时候会自动执行，只执行一次 
+    
 updation(更新)：  
-    props发生变化：  
-        componentWillReceiveProps(){} :当一个组件从父组件接收参数，并且
-                                       只要父组件的render被重新执行时，这个周期函数就会执行
-                                       （组件第一次存在父组件中不会执行）
-        后面跟states情况一样.....
-
     states发生变化：
         shouldComponentUptate(){return true/false} ：组件被更新之前会自动执行
         componentWillUpdate(){} :组件被更新之前会执行，但他在shouldComponentUptate之后并且返回true时执行
         render(){} :更新页面
         componentDidUpdate(){} :组件更新之后被执行
+        
+    props发生变化：  
+        componentWillReceiveProps(){} :当一个组件从父组件接收参数，并且
+                                       只要父组件的render被重新执行时，这个周期函数就会执行
+                                       （组件第一次存在父组件中不会执行）
+        后面跟states情况一样.....
+    
 unmounting(去除)
         componentWillUnmount(){} :当组件即将从页面中被剔除是执行
-
+```
 
 #### 生命周期应用场景:
 
 componentWillReceiveProps(){} ：可以避免无谓的render函数的运行，提升性能  
+  
 componentDidMount(){} ：请求Ajax数据，不放在render里面是因为它会不断地重新运行，不放在componentWillMount里是当以后写react native或者用react写服务端重构的时候，放在这里会发生冲突  
 用axios请求数据：  
 ```javascript
