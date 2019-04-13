@@ -36,20 +36,20 @@ defaultProps: = {
 
 ### 虚拟DOM： 大大提高组件渲染的效率
  
-方案1：缺陷————第一次生成完整的DOM片段，第二次也是，所以很耗能！！！  
+方案1：缺陷——第一次生成完整的DOM片段，第二次也是，所以很耗能！
 1.state: 数据  
 2.JSX 模板  
 3.数据 + 模板 结合，来生成真实的DOM 来显示  
 4.state 发生改变  
-5.数据 + 模板 结合，来生成真实的DOM 替换原始的DOM ——> 耗能  
+5.数据 + 模板 结合，来生成真实的DOM 替换原始的DOM —> 耗能  
   
-方案2：缺陷————性能提升不明显  
+方案2：缺陷——性能提升不明显  
 1.state: 数据  
 2.JSX 模板  
 3.数据 + 模板 结合，来生成真实的DOM 来显示  
 4.state 发生改变  
 5.数据 + 模板 结合，来生成真实的DOM 先不直接替换原始的DOM  
-6.新的DOM（DocumentFragment），和老的DOM 对比,找差异 ——> 也消耗了点性能  
+6.新的DOM（DocumentFragment），和老的DOM 对比,找差异 —> 也消耗了点性能  
 7.找出input框发生的变化  
 8.只用新的DOM中的input元素，替换老的DOM中的input元素  
 
@@ -60,17 +60,17 @@ defaultProps: = {
 ```javascript
     <div id="aaa"><span>hello world</span></div>  
 ```
-4.生成虚拟DOM （虚拟DOM是一个JS对象，用它来描述真实的DOM）——> 也有消耗，但小：创建js对象简单，创建dom难  
+4.生成虚拟DOM （虚拟DOM是一个JS对象，用它来描述真实的DOM）—> 也有消耗，但小：创建js对象简单，创建dom难  
 ```javascript
     ['div',{id:'aaa'}, ['span',{},'hello world']]  
     [ 'dom标签名称',{属性},[内容(child)-也是一个DOM]] 
 ```
 5.state 发生变化  
-6.数据 + 模板  生成新的虚拟DOM ——> 极大提升性能  
+6.数据 + 模板  生成新的虚拟DOM —> 极大提升性能  
 ```javascript
     ['div',{id:'aaa'}, ['span',{},'changed hahaha']]   
 ```
-7.比较两个虚拟DOM的区别，找到区别是span内容 ——> 对比操作的是js对象，提升性能  
+7.比较两个虚拟DOM的区别，找到区别是span内容 —> 对比操作的是js对象，提升性能  
 8.直接操作DOM，修改span内容  
 
 
@@ -100,8 +100,8 @@ render() {
 ```
 优点：  
 1.性能提升  
-2.使跨端应用得以实现————React Native  
-  移动端没有真实dom————原生应用中把虚拟DOM转化为原生的应用组件  
+2.使跨端应用得以实现——React Native  
+  移动端没有真实dom——原生应用中把虚拟DOM转化为原生的应用组件  
   网页才是转化为真实的DOM  
 
 
@@ -109,12 +109,12 @@ render() {
   
 新的虚拟DOM和原先的虚拟DOM对比的一个算法  
 只有当数据发生改变（调用了setState的时候）才会进行对比  
-setState是异步的设计初衷———连续几个setState会合并成一个，只做一次虚拟DOM的对比和更新  
+setState是异步的设计初衷——连续几个setState会合并成一个，只做一次虚拟DOM的对比和更新  
   
 概念：依次比对同层节点，一旦某层节点不同，则替换该节点下全部内容，这样虽然可能会造成重新渲染的一些浪费，但减少了时间，比对的速度快  
   
-key值会提高对比的速度————可以用item  
-key值不要用index————节点发生变化的时候导致key值不稳定，会变化  
+key值会提高对比的速度——可以用item  
+key值不要用index——节点发生变化的时候导致key值不稳定，会变化  
 
 ### React中的 ref
 React中的 ref 帮助我们直接获取DOM元素（尽量少用）  
@@ -158,6 +158,7 @@ unmounting(去除)
 componentWillReceiveProps(){} ：可以避免无谓的render函数的运行，提升性能  
   
 componentDidMount(){} ：请求Ajax数据，不放在render里面是因为它会不断地重新运行，不放在componentWillMount里是当以后写react native或者用react写服务端重构的时候，放在这里会发生冲突  
+  
 用axios请求数据：  
 ```javascript
     import axios from 'axios'
