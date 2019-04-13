@@ -32,7 +32,7 @@ defaultProps: = {
 ### 代码执行流程：
 
 1.数据和页面联动——当组件的state或者props发生改变时，render函数就会重新执行 (页面是render渲染出来的)。  
-2.父组件的render函数被运行时，他的子组件的render都会被重新运行一次  
+2.父组件的render函数被运行时，他的子组件的render都会被重新运行一次。  
 
 ### 虚拟DOM： 大大提高组件渲染的效率
  
@@ -77,7 +77,7 @@ defaultProps: = {
 ### 深入理解虚拟DOM
 
 真实情况是先4步在3步:  
-4.数据 + 模板 生成虚拟DOM （虚拟DOM是一个JS对象，用它来描述真实的DOM）—> 也有消耗，但小：创建js对象简单，创建dom难   
+4.数据 + 模板 生成虚拟DOM （虚拟DOM是一个JS对象，用它来描述真实的DOM）—> 也有消耗，但是不大：创建js对象简单，创建dom难。   
 ```javascript
     ['div',{id:'aaa'}, ['span',{},'hello world']]  
     [ dom标签名称, 属性, 内容(child)-也是一个DOM ]  
@@ -86,7 +86,7 @@ defaultProps: = {
 ```javascript
     <div id="aaa"><span>hello world</span></div>  
 ```
-render里面只是一个JSX模板 ，先生成JS对象 ，再生成真实DOM   
+render里面只是一个JSX模板 ，先生成JS对象 ，再生成真实DOM。   
 ```javascript
 render() {
     //JSX -> createElement -> 虚拟DOM（JS对象）-> 真实的DOM
@@ -107,17 +107,17 @@ render() {
 
 ### 虚拟DOM的Diff（diffrence）算法简单介绍：
   
-新的虚拟DOM和原先的虚拟DOM对比的一个算法  
-只有当数据发生改变（调用了setState的时候）才会进行对比  
-setState是异步的设计初衷——连续几个setState会合并成一个，只做一次虚拟DOM的对比和更新  
+新的虚拟DOM和原先的虚拟DOM对比的一个算法。  
+只有当数据发生改变（调用了setState的时候）才会进行对比。  
+setState是异步的设计初衷——连续几个setState会合并成一个，只做一次虚拟DOM的对比和更新。  
   
-概念：依次比对同层节点，一旦某层节点不同，则替换该节点下全部内容，这样虽然可能会造成重新渲染的一些浪费，但减少了时间，比对的速度快  
+概念：依次比对同层节点，一旦某层节点不同，则替换该节点下全部内容，这样虽然可能会造成重新渲染的一些浪费，但减少了时间，比对的速度快。  
   
 key值会提高对比的速度——可以用item  
 key值不要用index——节点发生变化的时候导致key值不稳定，会变化  
 
 ### React中的 ref
-React中的 ref 帮助我们直接获取DOM元素（尽量少用）  
+React中的 ref 帮助我们直接获取DOM元素（尽量少用）。  
 ```javascript
 setState有两个参数 this.setState(()=>{},()=>{
     //回调函数，前面的执行完在执行这里，解决setState异步时间差问题
@@ -155,9 +155,9 @@ unmounting(去除)
 
 #### 生命周期应用场景:
 
-componentWillReceiveProps(){} ：可以避免无谓的render函数的运行，提升性能  
+componentWillReceiveProps(){} ：可以避免无谓的render函数的运行，提升性能。  
   
-componentDidMount(){} ：请求Ajax数据，不放在render里面是因为它会不断地重新运行，不放在componentWillMount里是当以后写react native或者用react写服务端重构的时候，放在这里会发生冲突  
+componentDidMount(){} ：请求Ajax数据，不放在render里面是因为它会不断地重新运行，不放在componentWillMount里是当以后写react native或者用react写服务端重构的时候，放在这里会发生冲突。  
   
 用axios请求数据：  
 ```javascript
@@ -170,10 +170,10 @@ componentDidMount(){} ：请求Ajax数据，不放在render里面是因为它会
 ```
 
 ### 代码优化：
-1.把作用域的修改放在constructor里面，保证整个模块这个函数的作用域只会绑定一次，而且可以避免子组件的一些无谓的渲染  
-2.React底层setState内置的性能提升机制：首先他是异步过程，会把几次请求合并成一次，降低虚拟DOM的比对频率  
-3.同层比对、key值设置来提升比对速度，从而提升性能  
-4.借助shouldComponentUptate周期函数避免无谓的render函数的运行  
+1.把作用域的修改放在constructor里面，保证整个模块这个函数的作用域只会绑定一次，而且可以避免子组件的一些无谓的渲染。  
+2.React底层setState内置的性能提升机制：首先他是异步过程，会把几次请求合并成一次，降低虚拟DOM的比对频率。  
+3.同层比对、key值设置来提升比对速度，从而提升性能。  
+4.借助shouldComponentUptate周期函数避免无谓的render函数的运行。  
 ```javascript
     componentWillReceiveProps(nextProps,nextState) {
     if(nextProps.content !== this.props.content){
