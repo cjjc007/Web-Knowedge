@@ -186,7 +186,7 @@ componentDidMount(){} ：请求Ajax数据，不放在render里面是因为它会
 ### React实现css动画
 插件：react transition group  
 ```javascript
-import { CSSTransition } from 'react-transition-group'  
+import { CSSTransition,TransitionGroup } from 'react-transition-group'  
   
 render() {
   return (
