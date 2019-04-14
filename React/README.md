@@ -183,3 +183,64 @@ componentDidMount(){} ：请求Ajax数据，不放在render里面是因为它会
     }
   }
 ```
+### React实现css动画
+插件：react transition group  
+```javascript
+import { CSSTransition } from 'react-transition-group'  
+  
+render() {
+  return (
+    <Fragment>
+      <CSSTransition
+        in={this.state.show}
+        timeout={1000}
+        classNames='fade'
+        unmountOnExit
+        onEntered={(el)=>{el.style.color='blue'}}
+        appear={true}
+      >
+        <div>hello</div>
+      </CSSTransition>
+    </Fragment>
+  )
+}
+
+.fade-enter {
+  //入场动画第一个瞬间
+}
+.fade-enter-active {
+  //入场动画第二个时刻——到动画执行完成
+}
+.fade-enter-done {
+  //入场动画完成后
+}
+
+.fade-exit {
+  //出场动画第一个时刻
+}
+.fade-exit-active {
+  //出场动画第二个时刻——到动画执行完成
+}
+.fade-exit-done {
+  //出场动画完成后
+}
+
+unmountOnExit  //动画完成后DOM被移除
+
+onEntered={(el)=>{el.style.color='blue'}}
+//可以通过钩子函数用js实现动画效果
+
+onEnter/onEntering/onEntered
+onExit/onExiting/onExited
+
+appear={true} //页面出现是自动先执行一次动画
+.fade-enter .fade-appear {
+  //入场动画第一个瞬间
+}
+.fade-enter-active .fade-appear-active {
+  //入场动画第二个时刻——到动画执行完成
+}
+
+单个动画用<CSSTransition></CSSTransition>
+多个动画用<TransitionGroup><CSSTransition></CSSTransition></TransitionGroup>
+```
