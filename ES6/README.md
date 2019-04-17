@@ -88,3 +88,35 @@ console.log("sum" in box);//true
 console.log("say" in box);//false
 ```
 >类的所有实例共享一个原型对象，它们的原型都是Person.prototype，所以proto属性是相等的
+
+### 模块化
+ES6的模块化的基本规则和特点：
+1：每一个模块只加载一次， 每一个JS只执行一次， 如果下次再去加载同目录下同文件，直接从内存中读取。 一个模块就是一个单例，或者说就是一个对象；  
+2：每一个模块内声明的变量都是局部变量， 不会污染全局作用域；  
+3：模块内部的变量或者函数可以通过export导出；  
+4：一个模块可以导入别的模块。  
+在ES6中每一个模块即是一个文件，在文件中定义的变量，函数，对象在外部是无法获取的。如果你希望外部可以读取模块当中的内容，就必须使用export来对其进行暴露（输出）。
+```javascript
+let myName="laowang";
+let myAge=90;
+let myfn=function(){
+    return "我是"+myName+"！今年"+myAge+"岁了"
+}
+//如果你不想暴露模块当中的变量名字，可以通过as来进行操作
+export {
+    myName,
+    myAge as age,
+    myfn as fn
+}
+/******************接收的代码调整为**********************/
+import {fn,age,myName} from "./test.js";
+console.log(fn());     //我是laowang！今年90岁了
+console.log(age);      //90
+console.log(myName);   //laowang
+
+import * as info from "./test.js";  //通过*来批量接收，as 来指定接收的名字
+console.log(info.fn());             //我是laowang！今年90岁了
+console.log(info.age);              //90
+console.log(info.name);             //laowang
+```
+
