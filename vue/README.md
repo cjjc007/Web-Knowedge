@@ -149,4 +149,54 @@ Vue 提供了一种更通用的方式来观察和响应 Vue 实例上的数据�
 watch实现的代码是命令式的和重复的使代码变得复杂。computed 计算属性实现的代码简洁易于页面的维护。  
 
 ## 双向数据绑定
+#### vue数据双向绑定是通过数据劫持结合发布者-订阅者模式的方式来实现的。
+其中数据劫持通过Object.defineProperty()来实现的。  
+Object.defineProperty( )是用来做什么的？它可以来控制一个对象属性的一些特有操作，比如读写权、是否可以枚举，这里主要涉及到它对应的两个描述属性get和set。
+```javascript
+var Book = {}
+var name = '';
+Object.defineProperty(Book, 'name', {
+  set: function (value) {
+    name = value;
+    console.log('你取了一个书名叫做' + value);
+  },
+  get: function () {
+    return '《' + name + '》'
+  }
+})
+// get就是在读取name属性这个值触发的函数，set就是在设置name属性这个值触发的函数
 
+Book.name = 'vue权威指南';  // 你取了一个书名叫做vue权威指南
+console.log(Book.name);  // 《vue权威指南》
+```
+实现mvvm主要包含两个方面，数据变化更新视图，视图变化更新数据。
+因为view更新data其实可以通过事件监听即可，比如input标签监听 'input' 事件就可以实现了。所以关键点是在于，当数据改变，如何更新视图的。
+
+数据更新视图的重点是如何知道数据变了，只要知道数据变了，那么接下去的事都好处理。如何知道数据变了，其实上文我们已经给出答案了，就是通过Object.defineProperty( )对属性设置一个set函数，当数据改变了就会来触发这个函数，所以我们只要将一些需要更新的方法放在这里面就可以实现data更新view了。
+1.实现一个监听器Observer，用来劫持并监听所有属性，如果有变动的，就通知订阅者。
+2.实现一个订阅者Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图。
+3.实现一个解析器Compile，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器。
+```javascript
+// 简单实现方法
+<body>
+   <div id="app">
+       <input type="text" id="txt">
+       <p id="show-txt"></p>
+   </div>
+   <script>
+       var obj = {}
+       Object.defineProperty(obj, 'txt', {
+           get: function () {
+               return obj
+           },
+           set: function (newValue) {
+               document.getElementById('txt').value = newValue
+               document.getElementById('show-txt').innerHTML = newValue
+           }
+       })
+       document.addEventListener('keyup', function (e) {
+           obj.txt = e.target.value
+       })
+   </script>
+</body>
+```
