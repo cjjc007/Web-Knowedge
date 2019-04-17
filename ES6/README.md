@@ -3,7 +3,6 @@ ES6中的特性比较多，在这里列举常用的：
 * 类
 * 模块化
 * 箭头函数
-* 函数参数默认值
 * 模板字符串
 * 解构赋值
 * 延展操作符
@@ -90,7 +89,7 @@ console.log("say" in box);//false
 >类的所有实例共享一个原型对象，它们的原型都是Person.prototype，所以proto属性是相等的
 
 ### 模块化
-ES6的模块化的基本规则和特点：
+ES6的模块化的基本规则和特点：  
 1：每一个模块只加载一次， 每一个JS只执行一次， 如果下次再去加载同目录下同文件，直接从内存中读取。 一个模块就是一个单例，或者说就是一个对象；  
 2：每一个模块内声明的变量都是局部变量， 不会污染全局作用域；  
 3：模块内部的变量或者函数可以通过export导出；  
@@ -108,6 +107,7 @@ export {
     myAge as age,
     myfn as fn
 }
+
 /******************接收的代码调整为**********************/
 import {fn,age,myName} from "./test.js";
 console.log(fn());     //我是laowang！今年90岁了
@@ -119,4 +119,39 @@ console.log(info.fn());             //我是laowang！今年90岁了
 console.log(info.age);              //90
 console.log(info.name);             //laowang
 ```
+### 箭头（Arrow）函数
+这是ES6中最令人激动的特性之一。 => 不只是关键字function的简写，它还带来了其它好处。  
+箭头函数与包围它的代码共享同一个 this,能帮你很好的解决this的指向问题。  
+有经验的JavaScript开发者都熟悉诸如 var self = this; 或 var that =this这种引用外围this的模式,但借助 =>，就不需要这种模式了。  
+* 函数体内的this对象，就是定义时所在的对象，而不是使用时所在的对象。
+* 不可以当作构造函数，也就是说，不可以使用new命令，否则会抛出一个错误。
+* 不可以使用arguments对象，该对象在函数体内不存在。如果要用，可以用Rest参数代替。
+* 不可以使用yield命令，因此箭头函数不能用作Generator函数。
+```javascript
+var f = () => 5;
+// 等同于
+var f = function () { return 5 };
 
+var sum = (num1, num2) => num1 + num2;
+// 等同于
+var sum = function(num1, num2) {
+  return num1 + num2;
+};
+
+//由于大括号被解释为代码块，所以如果箭头函数直接返回一个对象，必须在对象外面加上括号。
+var getTempItem = id => ({ id: id, name: "Temp" });
+```
+
+### 字符串模板
+ES6支持 模板字符串，使得字符串的拼接更加的简洁、直观。
+```javascript
+//不使用模板字符串：
+var name = 'Your name is ' + first + ' ' + last + '.'
+//使用模板字符串：
+var name = `Your name is ${first} ${last}.`
+```
+* 在ES6中通过 ${}就可以完成字符串的拼接，只需要将变量放在大括号之中。
+* 在``中还可以随意折行
+
+### 解构赋值
+解构赋值语法是JavaScript的一种表达式，可以方便的从数组或者对象中快速提取值赋给定义的变量。
