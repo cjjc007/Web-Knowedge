@@ -1,14 +1,25 @@
-## ES6新特性（2015）
+## ES6-ES10新特性
 ES6中的特性比较多，在这里列举常用的：
 * 类
 * 模块化
 * 箭头函数
 * 模板字符串
-* 解构赋值
-* 延展操作符
+* 解构赋值和延展操作符
 * 对象属性简写
-* Promise
 * Let与Const
+* Promise
+
+ES7新特性：
+* 数组include()方法
+* a ** b指数操作运算符
+
+ES8新特性：
+* async/await
+* 
+
+ES9新特性：
+
+ES10新特性：
 
 ### 类（class）
 
@@ -153,7 +164,7 @@ var name = `Your name is ${first} ${last}.`
 * 在ES6中通过 ${}就可以完成字符串的拼接，只需要将变量放在大括号之中。
 * 在``中还可以随意折行
 
-### 解构赋值
+### 解构赋值和延展操作符
 在ES5中，开发者们为了从对象和数组中获取特定数据并赋值给变量，编写了许多看起来同质化的代码，  
 如果要提取更多变量，则必须依次编写类似的代码来为变量赋值，  
 如果其中还包含嵌套结构，只靠遍历是找不到真实信息的，必须要深入挖掘整个数据结构才能找到所需数据，  
@@ -166,15 +177,15 @@ let node = {
     name: "foo"
 };
 let { type, name, value = true, key } = node;
-console.log(type); // "Identifier"
-console.log(name); // "foo"
-console.log(value); // true
-console.log(key); // undefined
+console.log(type);       // "Identifier"
+console.log(name);       // "foo"
+console.log(value);      // true
+console.log(key);        // undefined
 
 //为非同名局部变量赋值
 let { type: localType, name: localName } = node;
-console.log(localType); // "Identifier"
-console.log(localName); // "foo"
+console.log(localType);   // "Identifier"
+console.log(localName);   // "foo"
 ```
 嵌套对象解构：解构嵌套对象仍然与对象字面量的语法相似，可以将对象拆解以获取想要的信息。
 
@@ -182,32 +193,32 @@ console.log(localName); // "foo"
 ```javascript
 let colors = [ "red", "green", "blue" ];
 let [ firstColor, secondColor ] = colors;
-console.log(firstColor); // "red"
-console.log(secondColor); // "green"
+console.log(firstColor);     // "red"
+console.log(secondColor);    // "green"
 
 //可以直接省略元素，只为感兴趣的元素提供变量名
 let [ , , thirdColor ] = colors;
-console.log(thirdColor); // "blue"
+console.log(thirdColor);     // "blue"
 
 // 在 ES6 中互换值
 let a = 1,
     b = 2;
 [ a, b ] = [ b, a ];
-console.log(a); // 2
-console.log(b); // 1
+console.log(a);          // 2
+console.log(b);          // 1
 
 //在数组中，可以通过...语法将数组中的其余元素赋值给一个特定的变量
 let colors = [ "red", "green", "blue" ];
 let [ firstColor, ...restColors ] = colors;
 console.log(firstColor); // "red"
-console.log(restColors.length); // 2
-console.log(restColors[0]); // "green"
-console.log(restColors[1]); // "blue"
+console.log(restColors.length);   // 2
+console.log(restColors[0]);       // "green"
+console.log(restColors[1]);       // "blue"
 
 // 在 ES6 中克隆数组
 let colors = [ "red", "green", "blue" ];
 let [ ...clonedColors ] = colors;
-console.log(clonedColors); //"[red,green,blue]"
+console.log(clonedColors);       //"[red,green,blue]"
 ```
 #### 混合解构
 ```javascript
@@ -228,12 +239,40 @@ setCookie("type", "js", {
 
 //字符串解构
 const [a, b, c, d, e] = 'hello';
-console.log(a);//"h"
-console.log(b);//"e"
-console.log(c);//"l"
-console.log(d);//"l"
-console.log(e);//"o"
+console.log(a);           //"h"
+console.log(b);           //"e"
+console.log(c);           //"l"
+console.log(d);           //"l"
+console.log(e);           //"o"
 
 const {length} = 'hello';
-console.log(length);//5
+console.log(length);      //5
 ```
+### 对象属性简写
+ES6 允许在对象之中，只写属性名，不写属性值。
+这时，属性值等于属性名所代表的变量。
+并且方法也可以简写。
+```javascript
+var birth = '2000/01/01';
+var Person = {
+	name: ' 张三 ',
+	// 等同于 birth: birth
+	birth,
+	//  等同于 hello: function ()...
+	hello() { console.log(' 我的名字是 ', this.name); 
+}
+
+function getPoint() {
+	var x = 1;
+	var y = 10;
+	return {x, y};
+}
+getPoint()       // {x:1, y:10}
+```
+
+### let和const
+
+
+### Promise
+
+
