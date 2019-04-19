@@ -159,4 +159,81 @@ var name = `Your name is ${first} ${last}.`
 如果其中还包含嵌套结构，只靠遍历是找不到真实信息的，必须要深入挖掘整个数据结构才能找到所需数据，  
 所以ES6添加了解构功能，将数据结构打散的过程变得更加简单，可以从打散后更小的部分中获取所需信息。  
 
-#### 对象赋值
+#### 对象解构
+```javascript
+let node = {
+    type: "Identifier",
+    name: "foo"
+};
+let { type, name, value = true, key } = node;
+console.log(type); // "Identifier"
+console.log(name); // "foo"
+console.log(value); // true
+console.log(key); // undefined
+
+//为非同名局部变量赋值
+let { type: localType, name: localName } = node;
+console.log(localType); // "Identifier"
+console.log(localName); // "foo"
+```
+嵌套对象解构：解构嵌套对象仍然与对象字面量的语法相似，可以将对象拆解以获取想要的信息。
+
+#### 数组解构
+```javascript
+let colors = [ "red", "green", "blue" ];
+let [ firstColor, secondColor ] = colors;
+console.log(firstColor); // "red"
+console.log(secondColor); // "green"
+
+//可以直接省略元素，只为感兴趣的元素提供变量名
+let [ , , thirdColor ] = colors;
+console.log(thirdColor); // "blue"
+
+// 在 ES6 中互换值
+let a = 1,
+    b = 2;
+[ a, b ] = [ b, a ];
+console.log(a); // 2
+console.log(b); // 1
+
+//在数组中，可以通过...语法将数组中的其余元素赋值给一个特定的变量
+let colors = [ "red", "green", "blue" ];
+let [ firstColor, ...restColors ] = colors;
+console.log(firstColor); // "red"
+console.log(restColors.length); // 2
+console.log(restColors[0]); // "green"
+console.log(restColors[1]); // "blue"
+
+// 在 ES6 中克隆数组
+let colors = [ "red", "green", "blue" ];
+let [ ...clonedColors ] = colors;
+console.log(clonedColors); //"[red,green,blue]"
+```
+#### 混合解构
+```javascript
+// options 上的属性表示附加参数
+function setCookie(name, value, options) {
+    options = options || {};
+    let secure = options.secure,
+        path = options.path,
+        domain = options.domain,
+        expires = options.expires;
+        // 设置 cookie 的代码
+}
+// 第三个参数映射到 options
+setCookie("type", "js", {
+    secure: true,
+    expires: 60000
+});
+
+//字符串解构
+const [a, b, c, d, e] = 'hello';
+console.log(a);//"h"
+console.log(b);//"e"
+console.log(c);//"l"
+console.log(d);//"l"
+console.log(e);//"o"
+
+const {length} = 'hello';
+console.log(length);//5
+```
