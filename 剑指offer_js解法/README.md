@@ -23,3 +23,18 @@ function replaceSpace(str) {
   return str.replace(/\s+/g, '%20');
 }
 ```
+#### 3.输入一个链表，/*从尾到头*/打印链表每个节点的值。
+```javascript
+function printListFromTailToHead(head) {
+  if(!head) {
+    return 0;
+  }else {
+    var arr=[];
+    while(head!=null){
+        arr.push(head.val);
+        head=head.next;
+    }
+    return arr.reverse()
+  }
+}
+```
