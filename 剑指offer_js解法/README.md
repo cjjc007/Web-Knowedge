@@ -77,5 +77,17 @@ function minNumberInRotateArray(rotateArray){
 ```
 #### 7.大家都知道斐波那契数列，现在要求输入一个整数n，请你输出斐波那契数列的第n项。n<=39
 ```javascript
-
+function Fibonacci(n){
+    var result=[];
+    if(n<=0) return 0;
+    else if(n<=2) return 1;
+    else{
+        result[1]=1;
+        result[2]=2;
+        for(var i=3;i<=n;i++){
+            result[i]=result[i-1]+result[i-2];
+        }
+        return result[n-1]
+    }
+}
 ```
