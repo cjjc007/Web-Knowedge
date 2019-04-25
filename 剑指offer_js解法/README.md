@@ -92,3 +92,25 @@ function Fibonacci(n){
 }
 ```
 #### 8.一只青蛙一次可以跳上1级台阶，也可以跳上2级。求该青蛙跳上一个n级的台阶总共有多少种跳法。
+```javascript
+function jumpFloor(number)
+{
+    if(number==1) return 1;
+    if(number==2) return 2;
+    var n1=1;
+    var n2=2;
+    var result=0;
+    for(var i=3;i<=number;i++){
+        result=n1+n2;
+        n1=n2;
+        n2=result;
+    }
+    return result;
+}
+```
+#### 9.一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。
+```javascript
+function jumpFloorII(number){
+  return Math.pow(2, number - 1);
+}
+```
