@@ -114,3 +114,37 @@ function jumpFloorII(number){
   return Math.pow(2, number - 1);
 }
 ```
+#### 10.我们可以用21的小矩形横着或者竖着去覆盖更大的矩形。请问用n个21的小矩形无重叠地覆盖一个2* n的大矩形，总共有多少种方法？
+```javascript
+function rectCover(number)
+{
+    if(number==1) return 1;
+    if(number==2) return 2;
+    var n1=1;
+    var n2=2;
+    var result=0;
+    for(var i=3;i<=number;i++){
+        result=n1+n2;
+        n1=n2;
+        n2=result;
+    }
+    return result;
+}
+```
+#### 11.输入一个整数，输出该数二进制表示中1的个数。其中负数用补码表示。
+```javascript
+function NumberOf1(n) 
+  { 
+      if(n<0){
+          n = n>>>0;
+      }
+      var res = n.toString(2); 
+      var count = 0; 
+      for(var i = 0; i <res.length; i++){ 
+          if(res[i] == 1){ 
+              count++  
+          } 
+      } 
+      return count; 
+  }
+```
