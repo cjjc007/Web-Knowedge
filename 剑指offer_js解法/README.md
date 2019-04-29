@@ -148,3 +148,20 @@ function NumberOf1(n)
       return count; 
   }
 ```
+#### 12.给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。
+```javascript
+function Power(base, exponent){
+  return Math.pow(base, exponent);
+  //return base**exponent;
+}
+```
+#### 13.输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，所有的偶数位于位于数组的后半部分，并保证奇数和奇数，偶数和偶数之间的相对位置不变。
+```javascript
+function reOrderArray(array){
+  var arr1=[], arr2=[];
+  array.map(function(i){
+        i%2==0?arr2.push(i):arr1.push(i);
+    })
+    return arr1.concat(arr2);
+}
+```
