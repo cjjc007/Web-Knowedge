@@ -165,3 +165,7 @@ function reOrderArray(array){
     return arr1.concat(arr2);
 }
 ```
+#### 14.输入一个链表，输出该链表中倒数第k个结点。
+```javascript
+
+```
