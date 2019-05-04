@@ -189,5 +189,24 @@ function FindKthToTail(head, k)
 ```
 #### 15.输入一个链表，反转链表后，输出链表的所有元素。
 ```javascript
+function ReverseList(pHead){
+    var newHead, temp;
+    if(!pHead){
+        return null;
+    }
+    if(pHead.next === null){
+        return pHead;
+    } else {
+        newHead = ReverseList(pHead.next);
+    }
+    temp = pHead.next;
+    temp.next = pHead;
+    pHead.next = null;
+    temp = null;
+    return newHead;
+}
+```
+#### 16.输入两个单调递增的链表，输出两个链表合成后的链表，当然我们需要合成后的链表满足单调不减规则。
+```javascript
 
 ```
