@@ -167,5 +167,27 @@ function reOrderArray(array){
 ```
 #### 14.输入一个链表，输出该链表中倒数第k个结点。
 ```javascript
+function FindKthToTail(head, k)
+{
+    if(head==null||k<=0) return null;
+    var prev = head;
+    var tail = head;
+
+    for(var index=0;index<k-1;index++){
+        if(tail.next!=null){
+            tail=tail.next;
+        }else{
+            return null;
+        }        
+    }    
+    while(tail.next!=null){
+        prev=prev.next;
+        tail=tail.next;
+    }
+    return prev;
+}
+```
+#### 15.输入一个链表，反转链表后，输出链表的所有元素。
+```javascript
 
 ```
