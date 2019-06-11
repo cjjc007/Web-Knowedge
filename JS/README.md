@@ -87,3 +87,4 @@ function create() {
     return typeof result === 'object' ? result : obj
 }
 ```
+.
