@@ -64,3 +64,26 @@ section：定义文档中的节（section、区段）。比如章节、页眉、
 figure：规定独立的流内容（图像、图表、照片、代码等等）。figure 元素的内容应该与主内容相关，但如果被删除，则不应对文档流产生影响。  
 details：描述文档或者文档某一部分细节  
 mark：义带有记号的文本。  
+## new一个对象的具体过程
+1. 创建空对象；  
+　　var obj = {};  
+2. 设置新对象的constructor属性为构造函数的名称，设置新对象的__proto__属性指向构造函数的prototype对象；  
+　　obj.__proto__ = ClassA.prototype;  
+3. 使用新对象调用函数，函数中的this被指向新实例对象：  
+　　ClassA.call(obj);　　//{}.构造函数();  
+4. 将初始化完毕的新对象地址，保存到等号左边的变量中。  
+#### 自己手动实现一个new:
+```javascript
+function create() {
+    // 创建一个空的对象
+    let obj = new Object()
+    // 获得构造函数
+    let Con = [].shift.call(arguments)
+    // 链接到原型
+    obj.__proto__ = Con.prototype
+    // 绑定 this，执行构造函数
+    let result = Con.apply(obj, arguments)
+    // 确保 new 出来的是个对象
+    return typeof result === 'object' ? result : obj
+}
+```
