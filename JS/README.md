@@ -1,4 +1,4 @@
-### 内置类型
+## 内置类型
 ### JS中原始类型有哪几种？null 是对象吗？原始（基本）数据类型和复杂数据类型有什么区别？
 目前，JS原始类型有六种，分别为:  
 Boolean、String、Number、Undefined、Null、Symbol(ES6新增)  
