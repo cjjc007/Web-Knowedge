@@ -120,8 +120,18 @@ function create() {
 1. 全局环境中的 this  
 浏览器环境：无论是否在严格模式下，在全局执行环境中（在任何函数体外部）this 都指向全局对象 window;  
 node 环境：无论是否在严格模式下，在全局执行环境中（在任何函数体外部），this 都是空对象 {}。  
-全局对象(node环境全局对象为global，浏览器环境全局对象为window)  
-  
+非严格模式： node环境，执行全局对象 global，浏览器环境，执行全局对象 window。  
+严格模式：执行 undefined。  
+```javascript
+function info(){
+  console.log(this.age);
+}
+var age = 28;
+info(); 
+//严格模式抛错, 因为 this 此时是 undefined
+//非严格模式，node下输出 undefined（因为全局的age不会挂在 global 上）
+//非严格模式。浏览器环境下输出 28（因为全局的age挂在 window 上）
+```
 2. 是否是 new 绑定  
 如果是 new 绑定，并且构造函数中没有返回 function 或者是 object，那么 this 指向这个新对象。  
 如果构造函数返回值是 function 或 object，这种情况下 this 指向的是返回的对象。  
@@ -140,6 +150,33 @@ function Super(age) {
 let instance = new Super('hello');
 console.log(instance.age);   //undefined
 ```
-3. 函数是否通过 call,apply 调用，或者使用了 bind 绑定，如果是，那么this绑定的就是指定的对象。
+3. 函数是否通过 call,apply 调用，或者使用了 bind 绑定，如果是，那么this绑定的就是指定的对象。  
+4. 隐式绑定，函数的调用是在某个对象上触发的，即调用位置上存在上下文对象。典型的隐式调用为: xxx.fn()
+```javascript
+function info(){
+  console.log(this.age);
+}
+var person = {
+  age: 20,
+  info
+}
+var age = 28;
+person.info(); //20;执行的是隐式绑定
+```
+5. 箭头函数的情况：箭头函数没有自己的this，继承外层上下文绑定的this。  
+```javascript
+let obj = {
+  age: 10,
+  info: function() {
+    return () => {
+      console.log(this.age);  //this继承的是外层上下文绑定的this
+    }
+  }
+}
+let person = {age: 18};
+let info = obj.info();
+info();    //10
 
-
+let info2 = obj.info.call(person);
+info2();   //18
+```
