@@ -55,14 +55,20 @@ function instanceof(left, right) {
   left = left.__proto__
   // 判断对象的类型是否等于类型的原型
   while (true) {
-  	if (left === null)
-    	return false
-   	if (prototype === left)
-   		return true
-   	left = left.__proto__
+   if (left === null)
+   	return false
+   if (prototype === left)
+   	return true
+    left = left.__proto__
   }
 }
 ```
+#### 如何判断一个变量是不是数组？
+1.使用 Array.isArray 判断，如果返回 true, 说明是数组。  
+2.使用 instanceof Array 判断，如果返回true, 说明是数组。  
+3.使用 Object.prototype.toString.call 判断，如果值是 [object Array], 说明是数组。  
+4.通过 constructor 来判断，如果是数组，那么 arr.constructor===Array。 (不准确，因为我们可以指定 obj.constructor=Array)  
+
 ## H5语义化的理解
 语义化意味着顾名思义，HTML5的语义化指的是合理正确的使用语义化的标签来创建页面结构，如 header,footer,nav，从标签上即可以直观的知道这个标签的作用，而不是滥用div。  
 #### 语义化的优点有:
