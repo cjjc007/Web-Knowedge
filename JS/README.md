@@ -40,6 +40,29 @@ console.log(b);
 // 因为 + 'b' -> NaN
 // 你也许在一些代码中看到过 + '1' -> 1
 ```
+#### typeof 是否正确判断类型? instanceof呢？ instanceof 的实现原理是什么？
+首先 typeof 能够正确的判断基本数据类型，但是除了 null, typeof null输出的是对象。  
+但是对象来说，typeof 不能正确的判断其类型， typeof 一个函数可以输出 'function',而除此之外，输出的全是 object,这种情况下，我们无法准确的知道对象的类型。  
+  
+instanceof可以准确的判断复杂数据类型，但是不能正确判断基本数据类型。  
+instanceof 是通过原型链判断的，A instanceof B, 在A的原型链中层层查找，是否有原型(prototype)等于 B.__proto__，如果一直找到A的原型链的顶端(null;即 Object.prototype.__proto__),仍然不等于B.prototype，那么返回false，否则返回true。 
+#### 自己手动实现一下 instanceof
+```javascript
+function instanceof(left, right) {
+    // 获得类型的原型
+    let prototype = right.prototype
+    // 获得对象的原型
+    left = left.__proto__
+    // 判断对象的类型是否等于类型的原型
+    while (true) {
+    	if (left === null)
+    		return false
+    	if (prototype === left)
+    		return true
+    	left = left.__proto__
+    }
+}
+```
 ## H5语义化的理解
 语义化意味着顾名思义，HTML5的语义化指的是合理正确的使用语义化的标签来创建页面结构，如 header,footer,nav，从标签上即可以直观的知道这个标签的作用，而不是滥用div。  
 #### 语义化的优点有:
