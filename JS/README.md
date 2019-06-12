@@ -49,18 +49,18 @@ instanceof 是通过原型链判断的，A instanceof B, 在A的原型链中层�
 #### 自己手动实现一下 instanceof
 ```javascript
 function instanceof(left, right) {
-    // 获得类型的原型
-    let prototype = right.prototype
-    // 获得对象的原型
-    left = left.__proto__
-    // 判断对象的类型是否等于类型的原型
-    while (true) {
-    	if (left === null)
-    		return false
-    	if (prototype === left)
-    		return true
-    	left = left.__proto__
-    }
+  // 获得类型的原型
+  let prototype = right.prototype
+  // 获得对象的原型
+  left = left.__proto__
+  // 判断对象的类型是否等于类型的原型
+  while (true) {
+  	if (left === null)
+    	return false
+   	if (prototype === left)
+   		return true
+   	left = left.__proto__
+  }
 }
 ```
 ## H5语义化的理解
