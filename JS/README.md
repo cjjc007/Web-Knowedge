@@ -116,4 +116,30 @@ function create() {
     return typeof result === 'object' ? result : obj
 }
 ```
-.
+## this: 如何正确判断this的指向?
+1. 全局环境中的 this  
+浏览器环境：无论是否在严格模式下，在全局执行环境中（在任何函数体外部）this 都指向全局对象 window;  
+node 环境：无论是否在严格模式下，在全局执行环境中（在任何函数体外部），this 都是空对象 {}。  
+全局对象(node环境全局对象为global，浏览器环境全局对象为window)  
+  
+2. 是否是 new 绑定  
+如果是 new 绑定，并且构造函数中没有返回 function 或者是 object，那么 this 指向这个新对象。  
+如果构造函数返回值是 function 或 object，这种情况下 this 指向的是返回的对象。  
+```javascript
+function Super(age) {
+  this.age = age;
+}
+let instance = new Super('6');
+console.log(instance.age);  //6
+
+function Super(age) {
+  this.age = age;
+  let obj = {a: '2'};
+  return obj;
+}
+let instance = new Super('hello');
+console.log(instance.age);   //undefined
+```
+3. 函数是否通过 call,apply 调用，或者使用了 bind 绑定，如果是，那么this绑定的就是指定的对象。
+
+
