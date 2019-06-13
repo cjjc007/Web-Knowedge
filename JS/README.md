@@ -180,4 +180,4 @@ info();    //10
 let info2 = obj.info.call(person);
 info2();   //18
 ```
-啊飒飒
+11
