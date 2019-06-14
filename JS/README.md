@@ -40,6 +40,16 @@ console.log(b);
 // 因为 + 'b' -> NaN
 // 你也许在一些代码中看到过 + '1' -> 1
 ```
+#### == 和 === 有的区别
+=== 不需要进行类型转换，只有类型相同并且值相等时，才返回 true.  
+== 如果两者类型不同，首先需要进行类型转换。具体流程如下:  
+1.首先判断两者类型是否相同，如果相等，判断值是否相等.  
+2.如果类型不同，进行类型转换  
+3.判断比较的是否是 null 或者是 undefined, 如果是, 返回 true .  
+4.判断两者类型是否为 string 和 number, 如果是, 将字符串转换成 number  
+5.判断其中一方是否为 boolean, 如果是, 将 boolean 转为 number 再进行判断  
+6.判断其中一方是否为 object 且另一方为 string、number 或者 symbol , 如果是, 将 object 转为原始类型再进行判断  
+
 #### typeof 是否正确判断类型? instanceof呢？ instanceof 的实现原理是什么？
 首先 typeof 能够正确的判断基本数据类型，但是除了 null, typeof null输出的是对象。  
 但是对象来说，typeof 不能正确的判断其类型， typeof 一个函数可以输出 'function',而除此之外，输出的全是 object,这种情况下，我们无法准确的知道对象的类型。  
@@ -180,4 +190,3 @@ info();    //10
 let info2 = obj.info.call(person);
 info2();   //18
 ```
-11
