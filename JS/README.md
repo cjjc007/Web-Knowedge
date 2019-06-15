@@ -256,4 +256,52 @@ function debounce(func, wait, immediate=true) {
 
 ```
 ### 节流函数的作用是什么？有哪些应用场景，请实现一个防抖函数。
-高频事件在规定时间内只会执行一次，执行一次后，只有大于设定的执行周期后才会执行第二次。
+节流函数的作用是规定一个单位时间，在这个单位时间内最多只能触发一次函数执行，如果这个单位时间内多次触发函数，只能有一次生效。  
+#### 函数节流的应用场景有:
+1.DOM 元素的拖拽功能实现（mousemove）  
+2.射击游戏的 mousedown/keydown 事件（单位时间只能发射一颗子弹）  
+3.计算鼠标移动的距离（mousemove）  
+4.监听滚动事件判断是否到页面底部自动加载更多：给 scroll 加了 debounce 后，只有用户停止滚动后，才会判断是否到了页面底部；如果是 throttle 的话，只要页面滚动就会间隔一段时间判断一次  
+```javascript
+function throttle(func, wait, options) {
+    var timeout, context, args, result;
+    var previous = 0;
+    if (!options) options = {};
+
+    var later = function () {
+        previous = options.leading === false ? 0 : Date.now() || new Date().getTime();
+        timeout = null;
+        result = func.apply(context, args);
+        if (!timeout) context = args = null;
+    };
+
+    var throttled = function () {
+        var now = Date.now() || new Date().getTime();
+        if (!previous && options.leading === false) previous = now;
+        var remaining = wait - (now - previous);
+        context = this;
+        args = arguments;
+        if (remaining <= 0 || remaining > wait) {
+            if (timeout) {
+                clearTimeout(timeout);
+                timeout = null;
+            }
+            previous = now;
+            result = func.apply(context, args);
+            if (!timeout) context = args = null;
+        } else if (!timeout && options.trailing !== false) {
+            // 判断是否设置了定时器和 trailing
+            timeout = setTimeout(later, remaining);
+        }
+        return result;
+    };
+
+    throttled.cancel = function () {
+        clearTimeout(timeout);
+        previous = 0;
+        timeout = context = args = null;
+    };
+
+    return throttled;
+}
+```
