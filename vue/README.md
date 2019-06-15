@@ -221,3 +221,5 @@ Vuex 是 Vue 中的 Redux。实际上，Redux 也可以用于 Vue，但是，使
 #### action
 * action 类似于 muation, 不同在于：action 提交的是 mutation,而不是直接变更状态
 * action 可以包含任意异步操作
+
+## VUE1 | VUE2 | VUE3 的区别：
