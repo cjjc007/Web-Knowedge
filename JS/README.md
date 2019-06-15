@@ -201,10 +201,53 @@ let info2 = obj.info.call(person);
 info2();   //18
 ```
 ## 防抖(debounce)函数的作用是什么？有哪些应用场景，请实现一个防抖函数。
-防抖函数的作用就是控制函数在一定时间内的执行次数。防抖意味着N秒内函数只会被执行一次，如果N秒内再次被触发，则重新计算延迟时间。
+防抖函数的作用就是控制函数在一定时间内的执行次数。防抖意味着N秒内函数只会被执行一次，如果N秒内再次被触发，则重新计算延迟时间。  
+  
+#### 防抖应用场景：  
+1、搜索框输入查询，如果用户一直在输入中，没有必要不停地调用去请求服务端接口，等用户停止输入的时候，再调用，设置一个合适的时间间隔，有效减轻服务端压力。  
+2、表单验证。  
+3、按钮提交事件。  
+4、浏览器窗口缩放，resize事件等。  
+#### 防抖函数实现：
+```javascript
+// immediate 为 true 时，表示开始会立即触发一次。
+// immediate 为 false 时，表示最后一次一定会触发。
+// loadsh 中的 debounce 的第三个参数 option ，提供了 leading 和 trailing两个参数。
 
-防抖应用场景：
-1、搜索框输入查询，如果用户一直在输入中，没有必要不停地调用去请求服务端接口，等用户停止输入的时候，再调用，设置一个合适的时间间隔，有效减轻服务端压力。
-2、表单验证。
-3、按钮提交事件。
-4、浏览器窗口缩放，resize事件等。
+function debounce(func, wait, immediate=true) {
+  let timeout, context, args;
+  // 延迟执行函数
+  const later = () => setTimeout(() => {
+    // 延迟函数执行完毕，清空定时器
+    timeout = null
+    // 延迟执行的情况下，函数会在延迟函数中执行
+    // 使用到之前缓存的参数和上下文
+    if (!immediate) {
+        func.apply(context, args);
+        context = args = null;
+    }
+  }, wait);
+  let debounced = function (...params) {
+    if (!timeout) {
+    timeout = later();
+    if (immediate) {
+      //立即执行
+      func.apply(this, params);
+    } else {
+      //闭包
+      context = this;
+      args = params;
+      }
+    } else {
+      clearTimeout(timeout);
+      timeout = later();
+    }
+  }
+  debounced.cancel = function () {
+    clearTimeout(timeout);
+    timeout = null;
+  };
+  return debounced;
+};
+
+```
