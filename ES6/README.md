@@ -6,20 +6,13 @@ ES6中的特性比较多，在这里列举常用的：
 * 模板字符串
 * 解构赋值和延展操作符
 * 对象属性简写
-* Let与Const
-* Promise
-
-ES7新特性：
-* 数组include()方法
-* a ** b指数操作运算符
-
-ES8新特性：
-* async/await
-* 
-
-ES9新特性：
-
-ES10新特性：
+* let与const
+* symbol
+* set和map数据结构
+* Proxy 和 Reflect
+* Generator 函数
+* Promise 对象
+* async/await 函数
 
 ### 类（class）
 
