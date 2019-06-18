@@ -13,6 +13,7 @@ ES6中的特性比较多，在这里列举常用的：
 * Generator 函数
 * Promise 对象
 * async/await 函数
+* module
 
 ### 类（class）
 
