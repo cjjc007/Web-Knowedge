@@ -305,3 +305,9 @@ function throttle(func, wait, options) {
     return throttled;
 }
 ```
+## 闭包
+## 深浅拷贝
+## 模块化
+## 继承
+## 原型链
+## 正则表达式
