@@ -1,7 +1,7 @@
 * 内置类型
 * H5语义化的理解
-* new一个对象的具体过程
-* this: 如何正确判断this的指向?
+* new
+* this
 * 防抖(debounce)和节流(throttle)
 * 闭包
 * 深浅拷贝
