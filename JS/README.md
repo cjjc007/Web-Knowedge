@@ -329,8 +329,10 @@ function foo() {
 }
 let func = foo();
 func(); //输出2
-
-
+```
+#### 闭包的缺点：
+闭包会导致函数的变量一直保存在内存中，过多的闭包可能会导致内存泄漏。
+```javascript
 // 经典面试题，循环中使用闭包解决 var 定义函数的问题
 for ( var i=1; i<=5; i++) {
 	setTimeout( function timer() {
@@ -338,12 +340,9 @@ for ( var i=1; i<=5; i++) {
 	}, i*1000 );
 }
 // 首先因为 setTimeout 是个异步函数，所有会先把循环全部执行完毕，这时候 i 就是 6 了，所以会输出一堆 6。
-```
-#### 闭包的缺点：
-闭包会导致函数的变量一直保存在内存中，过多的闭包可能会导致内存泄漏。
-#### 解决办法:
+
+// 解决办法:
 第一种使用立即执行函数
-```javascript
 for (var i = 1; i <= 5; i++) {
   (function(j) {
     setTimeout(function timer() {
@@ -351,17 +350,15 @@ for (var i = 1; i <= 5; i++) {
     }, j * 1000);
   })(i);
 }
-```
+
 第二种就是使用 setTimeout 的第三个参数
-```javascript
 for ( var i=1; i<=5; i++) {
 	setTimeout( function timer(j) {
 		console.log( j );
 	}, i*1000, i);
 }
-```
+
 第三种就是使用 let 定义 i 了
-```javascript
 for ( let i=1; i<=5; i++) {
 	setTimeout( function timer() {
 		console.log( i );
