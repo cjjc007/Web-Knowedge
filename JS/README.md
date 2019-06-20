@@ -319,15 +319,17 @@ function throttle(func, wait, options) {
 }
 ```
 ## 闭包
-闭包的定义很简单：函数 A 返回了一个函数 B，并且函数 B 中使用了函数 A 的变量，函数 B 就被称为闭包。
+闭包是指有权访问另一个函数作用域中的变量的函数，创建闭包最常用的方式就是在一个函数内部创建另一个函数。
 ```javascript
-function A() {
-  let a = 1
-  function B() {
-      console.log(a)
+function foo() {
+  var a = 2;
+  return function fn() {
+    console.log(a);
   }
-  return B
 }
+let func = foo();
+func(); //输出2
+
 
 // 经典面试题，循环中使用闭包解决 var 定义函数的问题
 for ( var i=1; i<=5; i++) {
@@ -337,6 +339,8 @@ for ( var i=1; i<=5; i++) {
 }
 // 首先因为 setTimeout 是个异步函数，所有会先把循环全部执行完毕，这时候 i 就是 6 了，所以会输出一堆 6。
 ```
+#### 闭包的缺点：
+闭包会导致函数的变量一直保存在内存中，过多的闭包可能会导致内存泄漏。
 #### 解决办法:
 第一种使用立即执行函数
 ```javascript
