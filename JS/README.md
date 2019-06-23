@@ -366,6 +366,69 @@ for ( let i=1; i<=5; i++) {
 }
 ```
 ## 深浅拷贝
+### 浅拷贝
+简单的赋值就是浅拷贝，因为对象和数组在赋值的时候都是引用传递，赋值的时候只是传递一个指针。
+```javascript
+// 首先可以通过 Object.assign 来解决这个问题。
+let a = {
+    age: 1
+}
+let b = Object.assign({}, a)
+a.age = 2
+console.log(b.age) // 1
+
+// 当然我们也可以通过展开运算符（…）来解决
+let a = {
+    age: 1
+}
+let b = {...a}
+a.age = 2
+console.log(b.age) // 1
+```
+### 深拷贝
+浅拷贝很容易，但是很多时候我们需要原样的把数组或者对象复制一份，在修改值的时候，不改变初始对象的值；  
+或者拷贝的对象只解决了第一层的问题，如果接下去的值中还有对象的话 这个时候就需要使用深拷贝。  
+  
+对于数组我们可以使用slice()和concat()方法来解决上面的问题  
+```javascript
+silce：  
+var arr = ['wsscat', 'autumns', 'winds'];
+        var arrCopy = arr.slice(0);
+        arrCopy[0] = 'tacssw'
+        console.log(arr)      //['wsscat', 'autumns', 'winds']
+        console.log(arrCopy)  //['tacssw', 'autumns', 'winds']
+  
+concat：  
+var arr = ['wsscat', 'autumns', 'winds'];
+        var arrCopy = arr.concat();
+        arrCopy[0] = 'tacssw'
+        console.log(arr)      //['wsscat', 'autumns', 'winds']
+        console.log(arrCopy)  //['tacssw', 'autumns', 'winds']
+```
+对象  
+对象我们可以定义一个新的对象并遍历新的属性上去实现深拷贝  
+```
+var obj = {
+            name: 'wsscat',
+            age: 0
+        }
+        var deepCopy = function(source) {
+            var result = {};
+            for(var key in source) {
+                if(typeof source[key] === 'object') {
+                    result[key] = deepCopy(source[key])
+                } else {
+                    result[key] = source[key]
+                }
+            }
+            return result;
+        }
+        var obj3 = deepCopy(obj)
+        obj.name = 'autumns';
+        console.log(obj);//Object {name: "autumns", age: 0}
+        console.log(obj3);//Object {name: "wsscat", age: 0}
+```
+
 ## 模块化
 ## 继承
 ## 原型链
