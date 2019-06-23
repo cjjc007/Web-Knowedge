@@ -500,6 +500,46 @@ require(['myModule'], function (my){
 　 my.printName();
 });
 ```
+### CMD
+CMD 即Common Module Definition通用模块定义，CMD规范是国内发展出来的，就像AMD有个requireJS，CMD有个浏览器的实现SeaJS，SeaJS要解决的问题和requireJS一样，只不过在模块定义方式和模块加载（可以说运行、解析）时机上有所不同。  
+语法:  
+Sea.js 推崇一个模块一个文件，遵循统一的写法  
+define  
+define(id?, deps?, factory)  
+因为CMD推崇一个文件一个模块，所以经常就用文件名作为模块id；CMD推崇依赖就近，所以一般不在define的参数中写依赖，而是在factory中写。  
+factory有三个参数：  
+function(require, exports, module){}  
+一，require  
+require 是 factory 函数的第一个参数，require 是一个方法，接受 模块标识 作为唯一参数，用来获取其他模块提供的接口；  
+二，exports  
+exports 是一个对象，用来向外提供模块接口；  
+三，module  
+module 是一个对象，上面存储了与当前模块相关联的一些属性和方法。  
+```
+// 定义模块  myModule.js
+define(function(require, exports, module) {
+  var $ = require('jquery.js')
+  $('div').addClass('active');
+});
+
+// 加载模块
+seajs.use(['myModule.js'], function(my){
+
+});
+```
+### AMD与CMD区别
+1、最明显的区别就是在模块定义时对依赖的处理不同：  
+AMD推崇依赖前置，在定义模块的时候就要声明其依赖的模块，  
+CMD推崇就近依赖，只有在用到某个模块的时候再去require，  
+这种区别各有优劣，只是语法上的差距，而且requireJS和SeaJS都支持对方的写法。  
+  
+2、AMD和CMD最大的区别是对依赖模块的执行时机处理不同，注意不是加载的时机或者方式不同。  
+很多人说requireJS是异步加载模块，SeaJS是同步加载模块，这么理解实际上是不准确的，其实加载模块都是异步的，只不过AMD依赖前置，js可以方便知道依赖模块是谁，立即加载，而CMD就近依赖，需要使用把模块变为字符串解析一遍才知道依赖了那些模块，这也是很多人诟病CMD的一点，牺牲性能来带来开发的便利性，实际上解析模块用的时间短到可以忽略。  
+为什么我们说两个的区别是依赖模块执行时机不同，为什么很多人认为ADM是异步的，CMD是同步的（除了名字的原因）  
+同样都是异步加载模块，AMD在加载模块完成后就会执行改模块，所有模块都加载执行完后会进入require的回调函数，执行主逻辑，这样的效果就是依赖模块的执行顺序和书写顺序不一定一致，看网络速度，哪个先下载下来，哪个先执行，但是主逻辑一定在所有依赖加载完成后才执行。  
+CMD加载完某个依赖模块后并不执行，只是下载而已，在所有依赖模块加载完成后进入主逻辑，遇到require语句的时候才执行对应的模块，这样模块的执行顺序和书写顺序是完全一致的。  
+这也是很多人说AMD用户体验好，因为没有延迟，依赖模块提前执行了，CMD性能好，因为只有用户需要的时候才执行的原因。  
+
 ## 继承
 ## 原型链
 ## 正则表达式
