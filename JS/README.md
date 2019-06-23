@@ -389,6 +389,25 @@ console.log(b.age) // 1
 浅拷贝很容易，但是很多时候我们需要原样的把数组或者对象复制一份，在修改值的时候，不改变初始对象的值；  
 或者拷贝的对象只解决了第一层的问题，如果接下去的值中还有对象的话 这个时候就需要使用深拷贝。  
   
+常可以通过 JSON.parse(JSON.stringify(object)) 来解决。  
+```javascript
+let a = {
+    age: 1,
+    jobs: {
+        first: 'FE'
+    }
+}
+let b = JSON.parse(JSON.stringify(a))
+a.jobs.first = 'native'
+console.log(b.jobs.first) // FE
+
+但是该方法也是有局限性的：
+1.会忽略 undefined
+2.会忽略 symbol
+3.不能序列化函数
+4.不能解决循环引用的对象
+```
+数组  
 对于数组我们可以使用slice()和concat()方法来解决上面的问题  
 ```javascript
 silce：  
@@ -425,8 +444,8 @@ var obj = {
         }
         var obj3 = deepCopy(obj)
         obj.name = 'autumns';
-        console.log(obj);//Object {name: "autumns", age: 0}
-        console.log(obj3);//Object {name: "wsscat", age: 0}
+        console.log(obj);   //Object {name: "autumns", age: 0}
+        console.log(obj3);  //Object {name: "wsscat", age: 0}
 ```
 
 ## 模块化
