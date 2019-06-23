@@ -476,6 +476,29 @@ module.exports = {
 var nameModule = require('./myModel.js');
 nameModule.printName();
 ```
+### AMD
+AMD 即Asynchronous Module Definition，异步模块定义的意思。它是一个在浏览器端模块化开发的规范，由于不是JavaScript原生支持，使用AMD规范进行页面开发需要用到对应的库函数，也就是RequireJS，实际上AMD 是 RequireJS 在推广过程中对模块定义的规范化的产出。  
+requireJS主要解决两个问题：  
+一，多个js文件可能有依赖关系，被依赖的文件需要早于依赖它的文件加载到浏览器；  
+二，js加载的时候浏览器会停止页面渲染，加载文件越多，页面失去响应时间越长。  
+```
+// 定义模块 myModule.js
+define(['dependency'], function(){
+    var name = 'Byron';
+    function printName(){
+        console.log(name);
+    }
+ 
+    return {
+        printName: printName
+    };
+});
+ 
+// 加载模块
+require(['myModule'], function (my){
+　 my.printName();
+});
+```
 ## 继承
 ## 原型链
 ## 正则表达式
