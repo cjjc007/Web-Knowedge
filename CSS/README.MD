@@ -74,7 +74,7 @@ BFC 是 Block Formatting Context 的缩写，即块格式化上下文。
 1.防止 margin 重叠  
 当两个div的 margin 都设置50px，会发生 margin 的重叠。  
 根据BFC规则，同一个BFC内的两个两个相邻Box的 margin 会发生重叠，因此我们可以在div外面再嵌套一层容器，并且触发该容器生成一个 BFC，这样 <divclass="a"></div> 就会属于两个 BFC，自然也就不会再发生 margin 重叠。  
-```
+```javascript
 <style>
 .a{
   height: 100px;
@@ -95,7 +95,7 @@ BFC 是 Block Formatting Context 的缩写，即块格式化上下文。
 ```
 2.清除内部浮动  
 如果我们希望 container 的高度能够包含浮动元素，那么可以创建一个新的 BFC，因为根据 BFC 的规则，计算 BFC 的高度时，浮动元素也参与计算。
-```
+```css
 <style>
 .a{
   height: 100px;
