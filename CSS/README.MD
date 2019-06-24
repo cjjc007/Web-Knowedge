@@ -54,6 +54,88 @@ em 特点：
 目前，除了IE8及更早版本外，所有浏览器均已支持rem。对于不支持它的浏览器，应对方法也很简单，就是多写一个绝对单位的声明。这些浏览器会忽略用rem设定的字体大小。  
 
 ## BFC
+BFC 是 Block Formatting Context 的缩写，即块格式化上下文。  
+#### BFC布局规则
+* BFC内，盒子依次垂直排列。
+* BFC内，两个盒子的垂直距离由 margin 属性决定。属于同一个BFC的两个相邻Box的margin会发生重叠【符合合并原则的margin合并后是使用大的margin】
+* BFC内，每个盒子的左外边缘接触内部盒子的左边缘（对于从右到左的格式，右边缘接触）。即使在存在浮动的情况下也是如此。除非创建新的BFC。
+* BFC的区域不会与float box重叠。
+* BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素。反之也如此。
+* 计算BFC的高度时，浮动元素也参与计算。
+
+#### 如何创建BFC
+* 根元素
+* 浮动元素（float 属性不为 none）
+* position 为 absolute 或 relative
+* overflow 不为 visible 的块元素
+* display 为 inline-block, table-cell, table-caption
+
+#### BFC的应用
+1.防止 margin 重叠  
+当两个div的 margin 都设置50px，会发生 margin 的重叠。  
+根据BFC规则，同一个BFC内的两个两个相邻Box的 margin 会发生重叠，因此我们可以在div外面再嵌套一层容器，并且触发该容器生成一个 BFC，这样 <divclass="a"></div> 就会属于两个 BFC，自然也就不会再发生 margin 重叠。  
+```
+<style>
+.a{
+  height: 100px;
+  width: 100px;
+  margin: 50px;
+  background: pink;
+}
+.container{
+  overflow: auto; /*触发生成BFC*/
+}
+</style>
+<body>
+  <div class="container">
+    <div class="a"></div>
+  </div> 
+<div class="a"></div>
+</body>
+```
+2.清除内部浮动  
+如果我们希望 container 的高度能够包含浮动元素，那么可以创建一个新的 BFC，因为根据 BFC 的规则，计算 BFC 的高度时，浮动元素也参与计算。
+```
+<style>
+.a{
+  height: 100px;
+  width: 100px;
+  margin: 10px;
+  background: pink;
+  float: left;
+}
+.container{
+  width: 120px;
+  display: inline-block;/*触发生成BFC*/
+  border: 2px solid black; 
+}
+</style>
+```
+3.自适应多栏布局  
+根据规则，BFC的区域不会与float box重叠。因此，可以触发生成一个新的BFC。
+```
+<style>
+body{
+  width: 500px;
+}
+.a{
+  height: 150px;
+  width: 100px;
+  background: pink;
+  float: left;
+}
+.b{
+  height: 200px;
+  background: blue;
+  overflow: hidden; /*触发生成BFC*/
+}
+</style>
+<body>
+  <div class="a"></div>
+  <div class="b"></div>
+</body> 
+```
+
 ## 隐藏元素
 ## css3选择器
 ## 三栏布局
