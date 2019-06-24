@@ -145,68 +145,93 @@ body{
 
 #### 完全隐藏
 1. display 属性(不占据空间)
+```css
 display: none;
-
+```
 2.hidden 属性 (不占据空间)
 HTML5 新增属性，相当于 display:none
+```css
 <div hidden></div>
-
+```
 #### 视觉上的隐藏
 1.利用 position 和 盒模型 将元素移出可视区范围  
 * 设置 posoition 为 absolute 或 fixed，通过设置 top、 left 等值，将其移出可视区域。(可视区域不占位)  
+```css
 position:absolute;  
 left: -99999px;  
-  
+```
 * 设置 position 为 relative，通过设置 top、 left等值，将其移出可视区域。（可视区域占位）
+```css
 position: relative;  
 left: -99999px;  
-如希望其在可视区域不占位置，需同时设置 height:0;  
+// 如希望其在可视区域不占位置，需同时设置 height:0; 
+```
   
 * 设置 margin 值，将其移出可视区域范围（可视区域占位）。
+```css
 margin-left: -99999px;  
-如果希望其在可视区域不占位，需同时设置 height:0;  
-  
+// 如果希望其在可视区域不占位，需同时设置 height:0;  
+```  
 2.利用 transfrom  
 * 缩放(占据空间)  
+```css
 transform: scale(0);  
-如果希望不占据空间，需同时设置 height:0  
+//如果希望不占据空间，需同时设置 height:0  
+```
   
 * 移动 translateX, translateY(占据空间)
-transform: translateX(-99999px);
-如果希望不占据空间，需同时设置 height:0
-  
-* 旋转 rotate (占据空间)
-transform: rotateY(90deg);
+```css
+transform: translateX(-99999px);  
+// 如果希望不占据空间，需同时设置 height:0  
+```
+* 旋转 rotate (占据空间)  
+```css
+transform: rotateY(90deg);  
+```
   
 3.设置其大小为0  
-* 宽高为0，字体大小为0：
-height: 0;
-width: 0;
-font-size: 0;
+* 宽高为0，字体大小为0：  
+```css
+height: 0;  
+width: 0;  
+font-size: 0;  
+```
   
-* 宽高为0，超出隐藏:
+* 宽高为0，超出隐藏:  
+```css
 height: 0;
 width: 0;
 overflow: hidden;
+```
   
 4.设置透明度为0 (占据空间)  
+```css
 opacity: 0;
+```
   
 5. visibility属性 (占据空间)  
+```css
 visibility: hidden
+```
   
 6.层级覆盖， z-index 属性 (占据空间)  
+```css
 position: relative;
 z-index: -999;
-再设置一个层级较高的元素覆盖在此元素上。
+// 再设置一个层级较高的元素覆盖在此元素上
+```
   
 7.clip-path 裁剪 (占据空间)  
+```css
 clip-path: polygon(0 0, 0 0, 0 0, 0 0);
-语义上的隐藏
-aria-hidden 属性 (占据空间)
-读屏软件不可读，占据空间，可见。
+```
+#### 语义上的隐藏
+aria-hidden 属性 (占据空间)  
+读屏软件不可读，占据空间，可见。  
+```css
 <div aria-hidden="true">
 </div>
+```
 
 
 ## css3选择器
