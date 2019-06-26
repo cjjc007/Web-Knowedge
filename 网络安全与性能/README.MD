@@ -19,5 +19,5 @@
 ## Event loop
 ## 存储
 ## 渲染机制
-## XSS—跨网站指令码
-## CSRF—跨站请求伪造
+## XSS、CSRF
+## TCP、UDP
