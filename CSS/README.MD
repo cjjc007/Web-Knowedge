@@ -10,6 +10,8 @@
 * display:
 * 浮动和清除浮动
 * css3新增样式
+* canvas
+* animation
 
 ## css书写规范
 #### CSS书写顺序:  
