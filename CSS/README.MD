@@ -244,4 +244,4 @@ aria-hidden 属性 (占据空间)
 ## 浮动和清除浮动
 ## css3新增样式
 ## canvas
-## animation
+## nimation
