@@ -11,7 +11,7 @@
 * 浮动和清除浮动
 * css3新增样式
 * canvas
-* animation
+* Animation
 
 ## css书写规范
 #### CSS书写顺序:  
