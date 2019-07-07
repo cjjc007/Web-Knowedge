@@ -331,8 +331,22 @@ css样式：
 缺点: 如果中间栏含有最小宽度限制，或是含有宽度的内部元素，当浏览器宽度小到一定程度，会发生层重叠的情况。
 
 ## 垂直居中
-## position:
-## display:
+## position
+（1）static  
+static是position属性的默认值，默认情况下，块级元素和行内元素按照各自的特性进行显示。  
+（2）relative  
+relative相对定位，其相对于父元素进行偏移，设置了这个属性后，元素会根据top，left，bottom，right进行偏移，关键点是它原本的空间仍然保留。  
+（3）absolute  
+绝对定位, 元素设置成absolute后会脱离文档流，并且不占有原本的空间，后面的元素会顶替上去，而且不论元素是行内元素还是块级元素，都会生成一个块级框，也就是例如行内元素span设置了absolute后就可以设置height和width属性了。  
+（4）fixed  
+fixed的表现方式类似于absolute，但是相比于absolute相对于不确定的父元素进行偏移，fixed就是相对于浏览器窗口进行偏移。  
+
+## display
+1、none： 元素不会显示，而且改元素现实的空间也不会保留。但有另外一个 visibility: hidden， 是保留元素的空间的。  
+2、inline： display的默认属性。将元素显示为内联元素，元素前后没有换行符。我们知道内联元素是无法设置宽高的，所以一旦将元素的display 属性设为 inline， 设置属性height和width是没有用的。此时影响它的高度一般是内部元素的高度（font-size）和padding。  
+3、block： 将元素将显示为块级元素，元素前后会带有换行符。设置为block后，元素可以设置width和height了。元素独占一行。  
+4、inline-block：行内块元素。这个属性值融合了inline 和 block 的特性，即是它既是内联元素，又可以设置width和height。  
+
 ## 浮动和清除浮动
 ## css3新增样式
 ## canvas
