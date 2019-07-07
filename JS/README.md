@@ -748,7 +748,7 @@ console.log(cat instanceof Cat); // true
 缺点：  
 调用了两次父类构造函数，生成了两份实例（子类实例将子类原型上的那份屏蔽了）  
 
-6、寄生组合继承
+#### 6、寄生组合继承
 核心：通过寄生方式，砍掉父类的实例属性，这样，在调用两次父类的构造的时候，就不会初始化两次实例方法/属性，避免的组合继承的缺点
 ```javascript
 function Cat(name){
@@ -776,3 +776,118 @@ Cat.prototype.constructor = Cat; // 需要修复下构造函数
 实现较为复杂  
 
 ## 正则表达式
+#### 代表特殊含义的元字符
+\d : 0-9之间的任意一个数字  \d只占一个位置  
+\w : 数字，字母 ，下划线 0-9 a-z A-Z _  
+\s : 空格或者空白等  
+\D : 除了\d  
+\W : 除了\w  
+\S : 除了\s  
+ . : 除了\n之外的任意一个字符  
+ \ : 转义字符  
+ | : 或者  
+() : 分组  
+\n : 匹配换行符  
+\b : 匹配边界 字符串的开头和结尾 空格的两边都是边界 => 不占用字符串位数  
+ ^ : 限定开始位置 => 本身不占位置  
+ $ : 限定结束位置 => 本身不占位置  
+[a-z] : 任意字母 []中的表示任意一个都可以  
+[^a-z] : 非字母 []中^代表除了  
+[abc] : abc三个字母中的任何一个 [^abc]除了这三个字母中的任何一个字符  
+  
+#### 代表次数的量词元字符
+* : 0到多个  
++ : 1到多个  
+? : 0次或1次 可有可无  
+{n} : 正好n次；  
+{n,} : n到多次  
+{n,m} : n次到m次  
+
+#### 方法：test、exec、match和replace
+reg.test(str) 用来验证字符串是否符合正则 符合返回true 否则返回false
+```javascript
+var str = 'abc';
+var reg = /\w+/;
+console.log(reg.test(str));  //true
+```
+reg.exec() 用来捕获符合规则的字符串
+```javascript
+var str = 'abc123cba456aaa789';
+var reg = /\d+/;
+console.log(reg.exec(str))
+//  ["123", index: 3, input: "abc123cba456aaa789"];
+console.log(reg.lastIndex)
+// lastIndex : 0 
+
+reg.exec捕获的数组中 
+没有加'g'标识符，则exec捕获的每次都是同一个
+
+// [0:"123",index:3,input:"abc123cba456aaa789"]
+0:"123" 表示我们捕获到的字符串
+index:3 表示捕获开始位置的索引
+input 表示原有的字符串
+lastIndex ：这个属性记录的就是下一次捕获从哪个索引开始
+```
+str.match(reg) 如果匹配成功，就返回匹配成功的数组，如果匹配不成功，就返回null
+```javascript
+var str = 'abc123cba456aaa789';
+var reg = /\d+/g;
+console.log(reg.exec(str));
+// ["123", index: 3, input: "abc123cba456aaa789"]
+console.log(str.match(reg));
+// ["123", "456", "789"]
+
+当全局匹配时，match方法会一次性把符合匹配条件的字符串全部捕获到数组中,
+如果想用exec来达到同样的效果需要执行多次exec方法。
+```
+str.replace() 匹配字符串，匹配成功的字符去替换成新的字符串
+```javascript
+var str = '2017-01-06';
+str = str.replace(/-(\d+)/g,function(){
+    console.log(arguments)
+})
+["-01", "01", 4, "2017-01-06"]
+["-06", "06", 7, "2017-01-06"]
+"2017undefinedundefined"
+```
+通过replace方法获取url中的参数的方法
+```javascript
+(function(pro){
+    function queryString(){
+        var obj = {},
+            reg = /([^?&#+]+)=([^?&#+]+)/g;
+        this.replace(reg,function($0,$1,$2){
+            obj[$1] = $2;
+        })
+        return obj;
+    }
+    pro.queryString = queryString;
+}(String.prototype));
+
+// 例如 url为 https://www.baidu.com?a=1&b=2
+// window.location.href.queryString();
+// {a:1,b:2}
+```
+#### 常用正则表达式：
+```javascript
+验证用户密码：(正确格式为：以字母开头，长度在6~18之间，只能包含字符、数字和下划线)
+"^[a-zA-Z]\w{5,17}$" 
+
+验证是否含有^%&',;=?$\"等字符：
+"[^%&',;=?$\x22]+"
+
+只能输入汉字：
+"^[\u4e00-\u9fa5]{0,}$"
+
+验证Email地址：
+"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
+
+验证URL：
+"^http://([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$"
+
+验证电话号码：(正确格式为："XXX-XXXXXXX"、"XXXX-XXXXXXXX"、"XXX-XXXXXXX"、"XXX-XXXXXXXX"、"XXXXXXX"和"XXXXXXXX")
+"^(\(\d{3,4}-)|\d{3.4}-)?\d{7,8}$"
+
+验证身份证号（15位或18位数字）：
+"^\d{15}|\d{18}$"
+```
