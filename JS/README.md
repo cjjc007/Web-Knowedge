@@ -541,11 +541,11 @@ CMD加载完某个依赖模块后并不执行，只是下载而已，在所有�
 这也是很多人说AMD用户体验好，因为没有延迟，依赖模块提前执行了，CMD性能好，因为只有用户需要的时候才执行的原因。  
 
 ## 原型和原型链
-#### 一，函数对象
+#### 一: 函数对象
 * 所有引用类型（函数，数组，对象）都拥有__proto__属性（隐式原型）
 * 所有函数拥有prototype属性（显式原型）（仅限函数）
 * 原型对象：拥有prototype属性的对象，在定义函数时就被创建
-#### 二，构造函数
+#### 二: 构造函数
 ```javascript
        //创建构造函数
         function Word(words){
@@ -566,10 +566,39 @@ CMD加载完某个依赖模块后并不执行，只是下载而已，在所有�
         w.alert();  //hello world
 ```
 print()方法是w实例本身具有的方法，所以w.print()打印hello world；alert()不属于w实例的方法，属于构造函数的方法，w.alert()也会打印hello world，因为实例继承构造函数的方法。  
+  
 实例w的隐式原型指向它构造函数的显式原型，指向的意思是恒等于 w.__proto__ === Word.prototype  
+  
  当调用某种方法或查找某种属性时，首先会在自身调用和查找，如果自身并没有该属性或方法，则会去它的__proto__属性中调用查找，也就是它构造函数的prototype中调用查找。所以很好理解实例继承构造函数的方法和属性：  
 w本身没有alert()方法，所以会去Word()的显式原型中调用alert()，即实例继承构造函数的方法。  
-
+  
+#### 三: 原型和原型链
+```javascript
+Function.prototype.a = "a";
+Object.prototype.b = "b";
+function Person(){}
+console.log(Person);    //function Person()
+let p = new Person();
+console.log(p);         //Person {} 对象
+console.log(p.a);       //undefined
+console.log(p.b);       //b
+```
+注意p.a打印结果为undefined，p.b结果为b  
+解析：  
+p是Person()的实例，是一个Person对象，它拥有一个属性值__proto__，并且__proto__是一个对象，包含两个属性值constructor和__proto__  
+```javascript
+        console.log(p.__proto__.constructor);   //function Person(){}
+        console.log(p.__proto__.__proto__);     //对象{}，拥有很多属性值
+```
+会发现p.__proto__.constructor返回的结果为构造函数本身，p.__proto__.__proto__有很多参数  
+调用constructor属性，p.___proto__.__proto__.constructor得到拥有多个参数的Object()函数，Person.prototype的隐式原型的constructor指向Object()，即Person.prototype.__proto__.constructor == Object()  
+从p.__proto__.constructor返回的结果为构造函数本身得到Person.prototype.constructor == Person()  
+所以p.___proto__.__proto__== Object.prototype  
+所以p.b打印结果为b，p没有b属性，会一直通过__proto__向上查找，最后当查找到Object.prototype时找到，最后打印出b，向上查找过程中，得到的是Object.prototype，而不是Function.prototype，找不到a属性，所以结果为undefined，这就是原型链，通过__proto__向上进行查找，最终到null结束  
+```
+        console.log(p.__proto__.__proto__.__proto__);   //null
+        console.log(Object.prototype.__proto__);        //null
+```
 ## 继承
 
 ## 正则表达式
