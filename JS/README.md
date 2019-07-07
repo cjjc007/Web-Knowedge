@@ -591,14 +591,30 @@ p是Person()的实例，是一个Person对象，它拥有一个属性值__proto_
         console.log(p.__proto__.__proto__);     //对象{}，拥有很多属性值
 ```
 会发现p.__proto__.constructor返回的结果为构造函数本身，p.__proto__.__proto__有很多参数  
-调用constructor属性，p.___proto__.__proto__.constructor得到拥有多个参数的Object()函数，Person.prototype的隐式原型的constructor指向Object()，即Person.prototype.__proto__.constructor == Object()  
+调用constructor属性，p.__proto__.__proto__.constructor得到拥有多个参数的Object()函数，Person.prototype的隐式原型的constructor指向Object()，即Person.prototype.__proto__.constructor == Object()  
 从p.__proto__.constructor返回的结果为构造函数本身得到Person.prototype.constructor == Person()  
-所以p.___proto__.__proto__== Object.prototype  
+所以p.__proto__.__proto__== Object.prototype  
 所以p.b打印结果为b，p没有b属性，会一直通过__proto__向上查找，最后当查找到Object.prototype时找到，最后打印出b，向上查找过程中，得到的是Object.prototype，而不是Function.prototype，找不到a属性，所以结果为undefined，这就是原型链，通过__proto__向上进行查找，最终到null结束  
+```javascript
+ console.log(p.__proto__.__proto__.__proto__);   //null
+ console.log(Object.prototype.__proto__);        //null
 ```
-        console.log(p.__proto__.__proto__.__proto__);   //null
-        console.log(Object.prototype.__proto__);        //null
+```javascript
+function Function(){}
+console.log(Function);  //Function()
+console.log(Function.prototype.constructor);    //Function()
+console.log(Function.prototype.__proto__);      //Object.prototype
+console.log(Function.prototype.__proto__.__proto__);    //NULL
+console.log(Function.prototype.__proto__.constructor);  //Object()
+console.log(Function.prototype.__proto__ === Object.prototype); //true
 ```
+#### 总结：
+1.查找属性，如果本身没有，则会去__proto__中查找，也就是构造函数的显式原型中查找，如果构造函数中也没有该属性，因为构造函数也是对象，也有__proto__，那么会去它的显式原型中查找，一直到null，如果没有则返回undefined  
+2.p.__proto__.constructor  == function Person(){}  
+3.p.___proto__.__proto__== Object.prototype  
+4.p.___proto__.__proto__.__proto__== Object.prototype.__proto__ == null  
+5.通过__proto__形成原型链而非protrotype  
+
 ## 继承
 
 ## 正则表达式
