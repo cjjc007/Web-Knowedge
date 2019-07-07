@@ -611,10 +611,74 @@ console.log(Function.prototype.__proto__ === Object.prototype); //true
 #### 总结：
 1.查找属性，如果本身没有，则会去__proto__中查找，也就是构造函数的显式原型中查找，如果构造函数中也没有该属性，因为构造函数也是对象，也有__proto__，那么会去它的显式原型中查找，一直到null，如果没有则返回undefined  
 2.p.__proto__.constructor  == function Person(){}  
-3.p.___proto__.__proto__== Object.prototype  
-4.p.___proto__.__proto__.__proto__== Object.prototype.__proto__ == null  
+3.p.___proto__.__proto__ == Object.prototype  
+4.p.___proto__.__proto__.__proto__ == Object.prototype.__proto__ == null  
 5.通过__proto__形成原型链而非protrotype  
 
 ## 继承
+JS作为面向对象的弱类型语言，继承也是其非常强大的特性之一。
+```javascript
+// 统一 定义一个动物类
+function Animal (name) {
+  // 属性
+  this.name = name || 'Animal';
+  // 实例方法
+  this.sleep = function(){
+    console.log(this.name + '正在睡觉！');
+  }
+}
+// 原型方法
+Animal.prototype.eat = function(food) {
+  console.log(this.name + '正在吃：' + food);
+};
+```
+#### 1、原型链继承
+核心： 将父类的实例作为子类的原型
+```javascript
+function Cat(){ 
+}
+Cat.prototype = new Animal();
+Cat.prototype.name = 'cat';
+
+var cat = new Cat();
+console.log(cat.name);
+console.log(cat.eat('fish'));
+console.log(cat.sleep());
+console.log(cat instanceof Animal); //true 
+console.log(cat instanceof Cat); //true
+```
+特点：  
+非常纯粹的继承关系，实例是子类的实例，也是父类的实例  
+父类新增原型方法/原型属性，子类都能访问到  
+简单，易于实现  
+缺点：  
+要想为子类新增属性和方法，必须要在new Animal()这样的语句之后执行，不能放到构造器中  
+无法实现多继承  
+来自原型对象的所有属性被所有实例共享（来自原型对象的引用属性是所有实例共享的）  
+创建子类实例时，无法向父类构造函数传参  
+
+#### 2、构造继承
+核心：使用父类的构造函数来增强子类实例，等于是复制父类的实例属性给子类（没用到原型）
+```javascript
+function Cat(name){
+  Animal.call(this);
+  this.name = name || 'Tom';
+}
+
+var cat = new Cat();
+console.log(cat.name);
+console.log(cat.sleep());
+console.log(cat instanceof Animal); // false
+console.log(cat instanceof Cat); // true
+```
+特点：  
+解决了1中，子类实例共享父类引用属性的问题  
+创建子类实例时，可以向父类传递参数  
+可以实现多继承（call多个父类对象）  
+缺点：  
+实例并不是父类的实例，只是子类的实例  
+只能继承父类的实例属性和方法，不能继承原型属性/方法  
+无法实现函数复用，每个子类都有父类实例函数的副本，影响性能  
+
 
 ## 正则表达式
