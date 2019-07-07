@@ -248,6 +248,44 @@ aria-hidden 属性 (占据空间)
 * 伪类选择器
 * 伪元素选择器 ::before{}
 
+#### 属性选择器:
+E[attr] 属性名，不确定具体属性值  
+E[attr=“value”] 指定属性名，并指定其对应属性值  
+E[attr ~=“value”] 指定属性名，找到的是具有此属性名，且与其它属性名之间用空格隔开  
+E[attr ^= “value”] 指定属性名，属性值以value开头  
+E[attr $=“value”] 指定属性名，属性值以value结束  
+E[attr *=“value”] 指定了属性名，属性值中包含了value  
+E[attr |= “value”] 指定属性名，属性值以value-开头或者值为value  
+  
+#### 伪元素选择器：
+::first-line 匹配文本块的首行  
+::first-letter 选择文本块的首字母  
+  
+#### 伪类选择器：
+:before, :after在元素内容前面、后面添加内容(相当于行内元素)  
+:link指向未被访问页面的链接设置样式  
+:visited设置指向已访问页面的链接的样式  
+:hover鼠标悬停时触发  
+:active在点击时触发  
+:enabled 选择启用状态元素  
+:disabled 选择禁用状态元素  
+:checked 选择被选中的input元素（单选按钮或复选框）  
+  
+#### CSS3结构选择器
+:nth-child 选择指定索引处的子元素  
+nth-child(n) 父元素下的第n个子元素  
+nth-child(odd) 奇数子元素(同nth-child(2n-1))  
+nth-child(even) 偶数子元素(同nth-child(2n))  
+nth-child(an+b) 公式  
+(nth-child从1开始)  
+:nth-last-child(n) 倒数第n个子元素  
+:nth-of-type(n) 父元素下的第n个指定类型的子元素  
+:nth-last-of-type 父元素下的倒数第n个指定类型的子元素  
+:first-child 选择父元素下的第一个子元素  
+:last-child 选择父元素下的最后一个子元素  
+:only-child 选择父元素下唯一的子元素  
+:only-of-type	选择父元素下指定类型的唯一子元素  
+  
 
 ## 三栏布局
 ## 垂直居中
