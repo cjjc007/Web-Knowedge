@@ -288,6 +288,48 @@ nth-child(an+b) 公式
   
 
 ## 三栏布局
+实现效果： 左右栏定宽，中间栏自适应
+#### 1、绝对定位布局：position + margin
+html结构：
+```html
+    <div class="container">
+        <div class="left">Left</div>
+        <div class="right">Right</div>
+        <div class="main">Main</div>
+    </div>
+```
+css样式：
+```css
+     body,html{
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+    /*左右进行绝对定位*/
+    .left,.right{
+        position: absolute;
+        height:100%;  
+        top: 0;
+        background: #ff69b4;
+    }
+    .left{
+        left: 0;
+        width: 100px;
+    }
+    .right{
+        right: 0;
+        width: 200px;
+    }
+    /*中间用margin空出左右元素所占的空间*/
+    .main{
+        height:100%; 
+        margin: 0 100px 200px 0;
+        background: #659;
+    }
+```
+缺点: 如果中间栏含有最小宽度限制，或是含有宽度的内部元素，当浏览器宽度小到一定程度，会发生层重叠的情况。
+
 ## 垂直居中
 ## position:
 ## display:
