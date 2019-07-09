@@ -1,3 +1,13 @@
+* 对设计模式的理解
+* Vue 和 React
+* 对 vue 生命周期的理解
+* 父子组件间的通信
+* Vue指令及用法
+* computed和watch和methods的使用和区别
+* 双向数据绑定
+* Vuex
+* VUE1 | VUE2 | VUE3 的区别
+
 ## 对设计模式的理解
 ### 什么是MVC(Model-View-Controller)
 Model(模型):数据层，负责存储数据  
@@ -222,4 +232,6 @@ Vuex 是 Vue 中的 Redux。实际上，Redux 也可以用于 Vue，但是，使
 * action 类似于 muation, 不同在于：action 提交的是 mutation,而不是直接变更状态
 * action 可以包含任意异步操作
 
-## VUE1 | VUE2 | VUE3 的区别：
+## VUE1 | VUE2 | VUE3 的区别
+### vue1和vue2
+### vue3
