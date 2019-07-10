@@ -12,7 +12,6 @@
 * Generator 函数
 * Promise 对象
 * async/await 函数
-* module
 
 ### 类（class）
 
