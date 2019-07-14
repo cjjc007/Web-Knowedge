@@ -571,8 +571,31 @@ fixed的表现方式类似于absolute，但是相比于absolute相对于不确�
 1、none： 元素不会显示，而且改元素现实的空间也不会保留。但有另外一个 visibility: hidden， 是保留元素的空间的。  
 2、inline： display的默认属性。将元素显示为内联元素，元素前后没有换行符。我们知道内联元素是无法设置宽高的，所以一旦将元素的display 属性设为 inline， 设置属性height和width是没有用的。此时影响它的高度一般是内部元素的高度（font-size）和padding。  
 3、block： 将元素将显示为块级元素，元素前后会带有换行符。设置为block后，元素可以设置width和height了。元素独占一行。  
-4、inline-block：行内块元素。这个属性值融合了inline 和 block 的特性，即是它既是内联元素，又可以设置width和height。  
-
+4、inline-block： 行内块元素。这个属性值融合了inline 和 block 的特性，即是它既是内联元素，又可以设置width和height。  
+5、table： 此元素会作为块级表格来显示（类似 <table>），表格前后带有换行符。  
+6、table-cell： 此元素会作为一个表格单元格显示（类似 <td> 和 <th>）  
+7、inherit： 规定应该从父元素继承 display 属性的值。  
+8、grid： 网格布局，每个网格都有起止线，每两条线之间都有设定好的距离。
+  ```css
+.parent {
+    display: grid;
+    grid-template-columns: 60px 180px;  //第一列60px,第二列180px
+    grid-template-rows: 10px auto;      // 第一行10px,第二行自适应
+    grid-auto-flow: dense;              // 依次填充每行，默认row,还有column
+    .key {
+        grid-column-start: 1;  // 正常情况是一行一行填补数据，现在把key设置为第一列数据，纵向排列
+        grid-column-end: 2;
+        justify-items: end;  // 这一列右对齐...start/center
+    }
+    .value {
+        grid-column-start: 2;  // value设置为第二列数据，纵向排列
+        grid-column-end: 3;
+        word-wrap: wrap;
+        word-break: break-word;
+    }
+ }
+  ```
+  
 ## 浮动和清除浮动
 ## css3新增样式
 ## canvas
