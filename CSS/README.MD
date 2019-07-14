@@ -330,6 +330,232 @@ css样式：
 ```
 缺点: 如果中间栏含有最小宽度限制，或是含有宽度的内部元素，当浏览器宽度小到一定程度，会发生层重叠的情况。
 
+#### 2、浮动布局： float + margin
+html结构：
+```html
+    <div class="container">
+        <div class="left">Left</div>
+        <div class="right">Right</div>
+        <div class="main">Main</div>
+    </div>
+```
+css样式：
+```css
+        body,html{
+            height: 100%;
+            padding:0;
+            margin: 0;
+        }
+        /*左边栏左浮动*/
+        .left{
+            float:left;
+            height:100%;
+            width:100px;
+            background:#ff69b4;
+        }
+        /*中间栏自适应*/
+        .main{
+            height:100%;
+            margin:0 200px 0 100px;
+            background: #659;
+        }
+        /*右边栏右浮动*/
+        .right{
+            float:right;
+            height:100%;
+            width:200px;
+            background:#ff69b4;
+        }
+```
+#### 3、flex布局
+html结构：
+```html
+    <div class="container">
+        <div class="left"></div>
+        <div class="main">center</div>
+        <div class="right">right</div>
+    </div>
+```
+css样式：
+```css
+     .container{
+            display: flex;
+        }
+        .left{
+            width:200px;
+            background: red;
+        }
+        .main{
+            flex: 1;
+            background: blue;
+        }
+        .right{
+            width:200px;
+            background: red;
+        }
+```
+这种布局方式，高度由内容决定。
+#### 4、table布局
+html结构:
+```html
+    <div class="container">
+        <div class="left">left</div>
+        <div class="main">center</div>
+        <div class="right">right</div>
+    </div>
+```
+css样式：
+```css
+         .container{
+            display: table;
+            width:100%;
+        }
+        .container>div{
+            display: table-cell;
+        }
+        .left{
+            width: 100px;
+            background: red;
+        }
+        .main{
+            background: blue;
+        }
+        .right{
+            width: 200px;
+            background: red;
+        }
+```
+高度由内容决定。
+
+#### 5、Grid网格布局
+html结构：
+```html
+    <div class="container">
+        <div class="left">left</div>
+        <div class="main">center</div>
+        <div class="right">right</div>
+    </div>
+```
+css样式：
+```css
+        .container{
+            display: grid;
+            width: 100%;
+            grid-template-rows: 100px;  /*设置行高*/
+            grid-template-columns: 100px auto 200px;  /*设置列数属性*/
+        }
+        .left{
+            background: red;
+        }
+        .main{
+            background: blue;
+        }
+        .right{
+            background:red;
+        }
+```
+#### 6、圣杯布局
+html结构：
+```html
+    <div class="container">
+        <div class="main col">Main</div>
+        <div class="left col">Left</div>
+        <div class="right col">Right</div>
+    </div>
+```
+css样式：
+```css
+        /* 两边定宽，中间自适用 */
+        body,html,.container{
+            height: 100%;
+            padding:0;
+            margin: 0;
+        }
+        .col{
+            float: left;   /* 三个col都设置float: left,为了把left和right定位到左右部分 */
+            position:relative;
+        }
+         /*父元素空出左右栏位子: 因为上一步中，左右栏定位成功了，但是中间栏的内容会被遮盖住*/
+        .container{
+            padding:0 200px 0 100px;
+        }
+        /*左边栏*/
+        .left{
+            left:-100px;
+            width: 100px;
+            height:100%;
+            margin-left: -100%;
+            background: #ff69b4;
+        }
+        /*中间栏*/
+        .main{
+            width:100%;
+            height: 100%;
+            background: #659;
+        }
+        /*右边栏*/
+        .right{
+            right:-200px;
+            width:200px;
+            height:100%;
+            margin-left: -200px;
+            background: #ff69b4;
+        }
+```
+总结：圣杯布局用到了浮动float、负边距、相对定位relative，不添加额外标签
+
+#### 7、双飞翼布局
+html结构：
+```html
+    <div class="container">
+        <div class="main col ">
+            <div class="main_inner">Main</div>
+        </div>
+        <div class="left col ">Left</div>
+        <div class="right col ">Right</div>
+    </div>
+```
+css样式：
+```css
+        body,html,.container{
+            height: 100%;
+            padding:0;
+            margin: 0;
+        }
+        .col{ 
+            float: left; /* 把left和right定位到左右部分 */
+        }
+        .main{ 
+            width:100%;
+            height:100%;
+            background: #659;
+        }
+        .main_inner{   /* 处理中间栏的内容被遮盖问题 */
+            margin:0 200px 0 100px;
+        }
+        .left{
+            width: 100px;
+            height: 100%;
+            margin-left: -100%;
+            background: #ff69b4;
+        }
+        .right{
+            height:100%;
+            width:200px;
+            margin-left: -200px;
+            background: #ff69b4;
+        }
+```
+#### 双飞翼布局的好处：
+（1）主要的内容先加载的优化。  
+（2）兼容目前所有的主流浏览器，包括IE6在内。  
+（3）实现不同的布局方式，可以通过调整相关CSS属性即可实现。  
+  
+#### 8、对比圣杯布局和双飞翼布局：
+（1）都是左右栏定宽，中间栏自适应的三栏布局，中间栏都放到文档流前面，保证先行渲染。  
+（2）解决方案基本相似：都是三栏全部设置左浮动float：left,然后分别结局中间栏内容被覆盖的问题。  
+（3）解决中间栏内容被覆盖问题时，圣杯布局设置父元素的padding,双飞翼布局在中间栏嵌套一个div,内容放到新的div中，并设置margin，实际上，双飞翼布局就是圣杯布局的改进方案。  
+
 ## 垂直居中
 ## position
 （1）static  
