@@ -9,9 +9,8 @@
 * position:
 * display:
 * 浮动和清除浮动
-* css3新增样式
 * canvas
-* Animation
+* Transtion 和 Aimation
 
 ## css书写规范
 #### CSS书写顺序:  
@@ -636,11 +635,11 @@ fixed的表现方式类似于absolute，但是相比于absolute相对于不确�
 2、inline： display的默认属性。将元素显示为内联元素，元素前后没有换行符。我们知道内联元素是无法设置宽高的，所以一旦将元素的display 属性设为 inline， 设置属性height和width是没有用的。此时影响它的高度一般是内部元素的高度（font-size）和padding。  
 3、block： 将元素将显示为块级元素，元素前后会带有换行符。设置为block后，元素可以设置width和height了。元素独占一行。  
 4、inline-block： 行内块元素。这个属性值融合了inline 和 block 的特性，即是它既是内联元素，又可以设置width和height。  
-5、table： 此元素会作为块级表格来显示（类似 <table>），表格前后带有换行符。  
-6、table-cell： 此元素会作为一个表格单元格显示（类似 <td> 和 <th>）  
+5、table： 此元素会作为块级表格来显示（类似 table），表格前后带有换行符。  
+6、table-cell： 此元素会作为一个表格单元格显示（类似 td 和 th）  
 7、inherit： 规定应该从父元素继承 display 属性的值。  
 8、grid： 网格布局，每个网格都有起止线，每两条线之间都有设定好的距离。
-  ```css
+```css
 .parent {
     display: grid;
     grid-template-columns: 60px 180px;  //第一列60px,第二列180px
@@ -704,6 +703,85 @@ display 为 inline-block, table-cell, table-caption
 }
 ```
 注意使用 display:inline-block 会产生间隙。
-## css3新增样式
+
 ## canvas
-## nimation
+
+## transform 2D/3D
+#### transform因其有着各种特效及优良的性能，所以成为动画的标配，有5个属性值主要包括：  
+旋转 rotate  
+扭曲 skew  
+缩放 scale  
+移动 translate  
+矩阵变形 matrix  
+```css
+.box {
+  transition: 1s all ease;
+  transform: rotate(0deg);
+}         // 给定初始值
+.box:active {
+  transform: rotate(90deg);
+  transform: translate(20px,40px); //横纵平移20px,纵轴40px
+  transform: scale(0.5, 1.2);      //同理
+  transform: skew(0, 45deg);
+  transform-origin: left top;     //左上角为中心变换角
+}
+
+ transform: rotate(90deg)，scale(0.5)；//先缩放，再旋转
+ transition: 1s width ease，1s height ease
+```
+速度设置：  
+ease（ease-in-out）:先加速，在减速  
+linear: 匀速  
+ease-in: 加速  
+ease-out：减速  
+
+#### 3D效果
+分别将rotate -> rotateX / rotateY / rotateZ
+translate -> translateX / translateY / translateZ
+```css
+.box {
+  transition: 1s all ease;
+  transform: perspective(600px) rotateX(0deg);
+}         // 给定初始值
+.box:active {
+  transform: perspective(600px) rotateX(90deg);
+}
+// 需加上景深效果
+// 需给父元素加上 transform-style: preserve-3d;
+```
+## Transtion 和 Aimation（帧动画）
+区别：触发条件不同，transition通常和hover等事件配合使用，由事件触发。animation则和gif动态图差不多，立即播放。  
+即：transition不能立即执行，animation不能用事件触发。  
+一般用@keyframes来创建animation的关键帧  
+指定动画的变换状态用%，或from和to  (其中from代表0%时的状态，to代表100%时的状态)  
+```css
+@keyframes name {
+  from{
+    width:100px;
+    background-color:red;
+  }
+  50%{
+    width:120px;
+    background-color:blue;
+  }
+  to{
+    width:160px;
+    bacjground-color:yellow;
+}
+```
+animation-name(名字)：@keyframes定义的名字  
+animation-duration(持续时间)：取值和用法和上面的transition一样  
+animation-timing-function(动效函数)：取值和用法和上面的transition一样  
+animation-delay（延迟时间）：取值和用法和上面的transition一样  
+animation-iteration-count(次数)：可以设置有限次数，比如5，也可以设置无限次数，infinite  
+animation-direction(方向)： 取值可以为：  
+1）normal      正向播放（0%--100%）  
+2)  reverse      反向播放（100%--0%）  
+3）alternate    奇数次正向播放，偶数次反向播放  
+4）alternate    奇数次反向播放，偶数次正向播放  
+animation-fill-mode(填充模式) ：取值可以为：  
+1）forwards   动画完成后，保持最后一个属性值（在最后一个关键帧中定义）  
+2）backwards animation-delay 所指定的一段时间内，在动画显示之前，应用开始属性值（在第一个关键帧中定义）  
+animation-play-state(运行状态)： 可以的取值为：  
+1）running  动画运行  
+2）paused   动画暂停  
