@@ -234,6 +234,7 @@ Vuex 是 Vue 中的 Redux。实际上，Redux 也可以用于 Vue，但是，使
 * action 可以包含任意异步操作
 
 ## Vue-router
+动态路由匹配、、、
 ## VUE1 | VUE2 | VUE3 的区别
 ### vue1和vue2
 ### vue3
