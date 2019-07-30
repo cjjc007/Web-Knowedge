@@ -5,6 +5,7 @@
 * Vue指令及用法
 * computed和watch和methods的使用和区别
 * 双向数据绑定
+* keep-alive
 * Vuex
 * Vue-router
 * VUE1 | VUE2 | VUE3 的区别
@@ -232,6 +233,27 @@ Vuex 是 Vue 中的 Redux。实际上，Redux 也可以用于 Vue，但是，使
 #### action
 * action 类似于 muation, 不同在于：action 提交的是 mutation,而不是直接变更状态
 * action 可以包含任意异步操作
+
+## keep-alive
+<keep-alive> 包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们。和 <transition> 相似，<keep-alive> 是一个抽象组件：它自身不会渲染一个 DOM 元素，也不会出现在父组件链中。
+
+生命钩子：activated 和 deactivated，主要用于保留组件状态或避免重新渲染。
+因为keep-alive会将组件保存在内存中，并不会销毁以及重新创建，所以不会重新调用组件的created等方法，需要用activated与deactivated这两个生命钩子来得知当前组件是否处于活动状态。
+<keep-alive> 是用在其一个直属的子组件被开关的情形。如果你在其中有 v-for 则不会工作。如果有上述的多个条件性的子元素，<keep-alive> 要求同时只有一个子元素被渲染。
+
+参数：include 和 exclude 属性允许组件有条件地缓存。二者都可以用逗号分隔字符串、正则表达式或一个数组来表示，判断name为xxx的时候缓存/不缓存
+
+max:
+最多可以缓存多少组件实例。一旦这个数字达到了，在新实例被创建之前，已缓存组件中最久没有被访问的实例会被销毁掉。
+
+
+深入keep-alive组件实现
+created钩子会创建一个cache对象，用来作为缓存容器，保存vnode节点。
+destroyed钩子则在组件被销毁的时候清除cache缓存中的所有组件实例。
+render()函数：
+1 通过getFirstComponentChild获取第一个子组件，获取该组件的name（存在组件名则直接使用组件名，否则会使用tag）。接下来会将这个name通过include与exclude属性进行匹配，匹配不成功（说明不需要进行缓存）则不进行任何操作直接返回vnode，
+2 
+3 根据key在this.cache中查找，如果存在则说明之前已经缓存过了，直接将缓存的vnode的componentInstance（组件实例）覆盖到目前的vnode上面。否则将vnode存储在cache中。
 
 ## Vue-router
 动态路由匹配
