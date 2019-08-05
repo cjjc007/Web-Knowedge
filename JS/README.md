@@ -83,7 +83,7 @@ console.log(a === b); // false
 但是对象来说，typeof 不能正确的判断其类型， typeof 一个函数可以输出 'function',而除此之外，输出的全是 object,这种情况下，我们无法准确的知道对象的类型。  
   
 instanceof可以准确的判断复杂数据类型，但是不能正确判断基本数据类型。  
-instanceof 是通过原型链判断的，A instanceof B, 在A的原型链中层层查找，是否有原型(prototype)等于 B.__proto__，如果一直找到A的原型链的顶端(null;即 Object.prototype.__proto__),仍然不等于B.prototype，那么返回false，否则返回true。 
+instanceof 是通过原型链判断的，A instanceof B, 在A的原型链中层层查找，是否有原型(prototype)等于 B.prototype，如果一直找到A的原型链的顶端(null;即 Object.prototype.__proto__),仍然不等于B.prototype，那么返回false，否则返回true。 
 #### 自己手动实现一下 instanceof
 ```javascript
 function instanceof(left, right) {
