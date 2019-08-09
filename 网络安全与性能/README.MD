@@ -139,56 +139,94 @@ res.setHeader('last-modified': Mon, 24 Dec 2018 09:49:49 GMT)
 ## 跨域方式
 ### jsonp
 通常为了减轻web服务器的负载，我们把js、css，img等静态资源分离到另一台独立域名的服务器上，在html页面中再通过相应的标签从不同域名下加载静态资源，而被浏览器允许，基于此原理，我们可以通过动态创建script，再请求一个带参网址实现跨域通信。  
-缺点：只能实现get一种请求。
+缺点：只能实现get一种请求，不安全，XSS。
 ```javascript
-function loadScript(url, cb) {
-  var head = document.head || document.getElementByTagName('head')[0];
-  var script = document.createElement('script');
-  script.src = url;
-  script.onload = script.onreadystatechange = function(){
-    if(!this.readyState || this.readyState=='loaded' || this.readyState=='complete'){
-      cb();
-      script.onload = script.onreadystatechange = null;
-    }
-  };
-  head.insertBefore(script, 0);
+function jsonp({url, params, cb}) {
+    return new Promise((resolve, reject) => {
+        let script = document.createElement('script')
+        window[cb] = function (data) {
+            resolve(data)
+            document.body.removeChild(script)
+        }
+        params = {...params, cb}
+        let arr = []
+        for(let key in params) {
+            arr.push(`${key}=${params[key]}`)
+        }
+        script.src = `${url}?${arr.join('&')}`
+        document.body.appendChild(script)
+    })
 }
 
-loadScript('http://suggestion.baidu.com/su?wd=w',function(){console.log('loaded')});
+jsonp({
+    url: 'https://www.baidu.com/su',
+    params: {wd:'b'},
+    cb: 'show'
+}).then(data => {
+    console.log(data)
+})
 ```
 ### cors
 思想就是使用自定义的HTTP头部让浏览器与服务器进行沟通，从而决定请求或响应是应该成功，还是应该失败。  
 只服务端设置Access-Control-Allow-Origin即可，前端无须设置。  
 ```javascript
 // Nodejs后台示例：
-var http = require('http');
-var server = http.createServer();
-var qs = require('querystring');
+const express = require('express')
 
-server.on('request', function(req, res) {
-    var postData = '';
+let app = express()
+let whiteList = ['http://localhost:3000']
+app.use(function(req, res, next) {
+    let origin = req.header.origin
+    if(whiteList.includes(origin)) {
+        // 允许哪个源访问
+        res.setHeader('Access-Control-Allow-Origin', origin)
+        // 允许携带哪个头访问我
+        res.setHeader('Access-Control-Allow-Header', 'name,show')
+        // 允许哪个方法访问我
+        res.setHeader('Access-Control-Allow-Methods', 'PUT')
+        // 允许携带coolie
+        res.setHeader('Access-Control-Allow-Credentials', true)
+        // 预检存活时间
+        res.setHeader('Access-Control-Max-Age', 6)
+        // 允许前端获取哪个头(允许返回的头)
+        res.setHeader('Access-Control-Expose-Header', 'name')
 
-    // 数据块接收中
-    req.addListener('data', function(chunk) {
-        postData += chunk;
-    });
+        if(req.method === 'OPTION') {
+            res.end()
+        }
+    }
+    next()
+})
+app.get('/getData', function(req,res) {
+    res.setHeader('name', 'cj')
+    res.end('bububu')
+})
+app.put('/getData', function(req,res) {
+    res.end('bububu')
+})
 
-    // 数据接收完毕
-    req.addListener('end', function() {
-        postData = qs.parse(postData);
+app.use(express.static(__dirname))
+app.listen(4000)
 
-        // 跨域后台设置
-        res.writeHead(200, {
-            'Access-Control-Allow-Credentials': 'true',     // 后端允许发送Cookie
-            'Access-Control-Allow-Origin': 'http://www.domain1.com',    // 允许访问的域（协议+域名+端口）
-            'Set-Cookie': 'l=a123456;Path=/;Domain=www.domain2.com;HttpOnly'   // HttpOnly:脚本无法读取cookie
-        });
-        res.write(JSON.stringify(postData));
-        res.end();
-    });
-});
-server.listen('8080');
-console.log('Server is running at port 8080...');
+// 前端ajax代码
+```javascript
+<script src="" async defer>
+            let xhr = new XMLHttpRequest
+            document.cookie = 'name=cj'
+            xhr.withCredentials = true  //携带凭证，就带上了cookie
+            xhr.open('GET', 'http://localhost:4000/getData', true)
+            xhr.setRequestHeader('name','cj')
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState === 4) {
+                    if(xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+                        console.log(xhr.response)
+                        console.log(xhr.getResponseHeader('name'))
+                    }
+                }
+            }
+            xhr.send()
+        </script>
+```
 ```
 
 ### postMessage
@@ -210,19 +248,18 @@ window.onload = function() {
     var targetOrigin = 'http://b.com';  // 若写成'http://b.com/c/proxy.html'效果一样
                                         // 若写成'http://c.com'就不会执行postMessage了
     ifr.contentWindow.postMessage('I was there!', targetOrigin);
+    window.onmessage = function(e){
+      console.log(e);
+    }
 };
 </script>
 
 // b.com/index.html中的代码：
 <script type="text/javascript">
-    window.addEventListener('message', function(event){
-        // 通过origin属性判断消息来源地址
-        if (event.origin == 'http://a.com') {
-            alert(event.data);    // 弹出"I was there!"
-            alert(event.source);  // 对a.com、index.html中window对象的引用
-                                  // 但由于同源策略，这里event.source不可以访问window对象
-        }
-    }, false);
+    window.onmessage = function(e){
+      console.log(e)
+      e.source.postMessage('i am coming', e.targetOrigin)
+    }
 </script>
 ```
 ### document.domain
@@ -245,7 +282,32 @@ window.onload = function() {
 ```
 
 ### window.name + iframe
+a和b同源，和c不同源  
+a先引用c，c把值放在window.name，把a引用的地址改成b  
+```javascript
+// localhost:3000/1.html
+  <iframe src="http://localhost:4000/3.html" frameborder="0" id="frame" onload="load"></iframe>
+  <script src="" async defer>
+      let first = TextTrackCue
+      function load() {
+          if(first){
+              let frame = document.getElementById('iframe')
+              frame.src = 'http://localhost:3000/2.html'
+              first = false
+          } else {
+              console.log(frame.contentWindow.name)
+          }
+      }
+  </script>
+  
+// localhost:3000/2.html
+// 中间代理页，内容为空即可
 
+// localhost:4000/3.html
+<script src="" async defer>
+    window.name = 'hahaha'    
+</script>
+```
 ### location.hash + iframe
 实现原理： a欲与b跨域相互通信，通过中间页c来实现。 三个页面，不同域之间利用iframe的location.hash传值，相同域之间直接js访问来通信。
 具体实现：A域：a.html -> B域：b.html -> A域：c.html，a与b不同域只能通过hash值单向通信，b与c也不同域也只能单向通信，但c与a同域，所以c可通过parent.parent访问a页面所有对象。
@@ -287,14 +349,33 @@ window.onload = function() {
 ### http-proxy
 ### nginx
 ### webscoket
+WebSocket protocol是HTML5一种新的协议。它实现了浏览器与服务器全双工通信，同时允许跨域通讯，是server push技术的一种很好的实现。
 
 ## Event loop
 
 ## 存储
 ### cooket
+1、前后端数据交互过程中HTTP是无状态的，只是接到请求，然后发送数据，并不关心对方的身份；  
+2、不是长久性的链接，对于请求要记住对方的身份比较困难，所以出现了cookie：就是为了在客户端保持用户身份。  
+浏览器会开辟文件存放cookie，不删除就一直存在，而每一次请求时，会在HTTP头里带上cookie信息，这样子后端就知道是谁了。  
+存储方式是key-value的键值对存在本地加密文件里。  
+还受域名和路径的限制，一个请求只能操作本地cookie  
+属性：  
+name / domain:生效的域名 / path:生效的路径 / expire:过期时间 / httpOnly:禁止客户端修改
+
 ### session
+在服务器上保存用户信息的机制。  
+服务器接到请求后，会生成sessionId,存放在cookie里面，再次请求的时候就知道谁发的请求了。  
+cookie消失，session也就消失。  
+
 ### localStorage
+cookie本身小，只有4k，把所有本地信息都放在cookie里不科学，当一些只与前台有关的数据，不需要发给服务端的那些，就会占用资源。  
+localStorege容量有5m，也只在当前域名下使用，只用key-value的形式存储  
+没有过期时间，浏览器关闭也不会消失。  
+只有手动删除才会消失。  
+
 ### sessionStorage
+与localStorage不同就是会在会话结束浏览器关闭后消失。
 
 ## 渲染机制
 ## XSS、CSRF
