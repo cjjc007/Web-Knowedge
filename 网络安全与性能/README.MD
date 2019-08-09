@@ -138,10 +138,152 @@ res.setHeader('last-modified': Mon, 24 Dec 2018 09:49:49 GMT)
 ## 事件机制
 ## 跨域方式
 ### jsonp
+通常为了减轻web服务器的负载，我们把js、css，img等静态资源分离到另一台独立域名的服务器上，在html页面中再通过相应的标签从不同域名下加载静态资源，而被浏览器允许，基于此原理，我们可以通过动态创建script，再请求一个带参网址实现跨域通信。  
+缺点：只能实现get一种请求。
+```javascript
+function loadScript(url, cb) {
+  var head = document.head || document.getElementByTagName('head')[0];
+  var script = document.createElement('script');
+  script.src = url;
+  script.onload = script.onreadystatechange = function(){
+    if(!this.readyState || this.readyState=='loaded' || this.readyState=='complete'){
+      cb();
+      script.onload = script.onreadystatechange = null;
+    }
+  };
+  head.insertBefore(script, 0);
+}
+
+loadScript('http://suggestion.baidu.com/su?wd=w',function(){console.log('loaded')});
+```
 ### cors
+思想就是使用自定义的HTTP头部让浏览器与服务器进行沟通，从而决定请求或响应是应该成功，还是应该失败。  
+只服务端设置Access-Control-Allow-Origin即可，前端无须设置。  
+```javascript
+// Nodejs后台示例：
+var http = require('http');
+var server = http.createServer();
+var qs = require('querystring');
+
+server.on('request', function(req, res) {
+    var postData = '';
+
+    // 数据块接收中
+    req.addListener('data', function(chunk) {
+        postData += chunk;
+    });
+
+    // 数据接收完毕
+    req.addListener('end', function() {
+        postData = qs.parse(postData);
+
+        // 跨域后台设置
+        res.writeHead(200, {
+            'Access-Control-Allow-Credentials': 'true',     // 后端允许发送Cookie
+            'Access-Control-Allow-Origin': 'http://www.domain1.com',    // 允许访问的域（协议+域名+端口）
+            'Set-Cookie': 'l=a123456;Path=/;Domain=www.domain2.com;HttpOnly'   // HttpOnly:脚本无法读取cookie
+        });
+        res.write(JSON.stringify(postData));
+        res.end();
+    });
+});
+server.listen('8080');
+console.log('Server is running at port 8080...');
+```
+
 ### postMessage
-### ducument.name
-### location.hash
+postMessage是HTML5 XMLHttpRequest Level 2中的API，且是为数不多可以跨域操作的window属性之一，它可用于解决以下方面的问题：  
+a.） 页面和其打开的新窗口的数据传递  
+b.） 多窗口之间消息传递  
+c.） 页面与嵌套的iframe消息传递  
+d.） 上面三个场景的跨域数据传递  
+
+用法：postMessage(data,origin)方法接受两个参数  
+data： html5规范支持任意基本类型或可复制的对象，但部分浏览器只支持字符串，所以传参时最好用JSON.stringify()序列化。  
+origin： 协议+主机+端口号，也可以设置为*,表示可以传递给任意窗口，如果要指定和当前窗口同源的话设置为"/"。  
+```javascript
+// a.com/index.html中的代码：
+<iframe id="ifr" src="b.com/index.html"></iframe>
+<script type="text/javascript">
+window.onload = function() {
+    var ifr = document.getElementById('ifr');
+    var targetOrigin = 'http://b.com';  // 若写成'http://b.com/c/proxy.html'效果一样
+                                        // 若写成'http://c.com'就不会执行postMessage了
+    ifr.contentWindow.postMessage('I was there!', targetOrigin);
+};
+</script>
+
+// b.com/index.html中的代码：
+<script type="text/javascript">
+    window.addEventListener('message', function(event){
+        // 通过origin属性判断消息来源地址
+        if (event.origin == 'http://a.com') {
+            alert(event.data);    // 弹出"I was there!"
+            alert(event.source);  // 对a.com、index.html中window对象的引用
+                                  // 但由于同源策略，这里event.source不可以访问window对象
+        }
+    }, false);
+</script>
+```
+### document.domain
+此方案仅限主域相同，子域不同的跨域应用场景。  
+实现原理：两个页面都通过js强制设置document.domain为基础主域，就实现了同域。  
+```javascript
+1.）父窗口：(www.domain.com/a.html)
+<iframe id="iframe" src="http://child.domain.com/b.html"></iframe>
+<script>
+    document.domain = 'domain.com';
+    var user = 'admin';
+</script>
+
+2.）子窗口：(child.domain.com/b.html)
+<script>
+    document.domain = 'domain.com';
+    // 获取父窗口中变量
+    alert('get js data from parent ---> ' + window.parent.user);
+</script>
+```
+
+### window.name + iframe
+
+### location.hash + iframe
+实现原理： a欲与b跨域相互通信，通过中间页c来实现。 三个页面，不同域之间利用iframe的location.hash传值，相同域之间直接js访问来通信。
+具体实现：A域：a.html -> B域：b.html -> A域：c.html，a与b不同域只能通过hash值单向通信，b与c也不同域也只能单向通信，但c与a同域，所以c可通过parent.parent访问a页面所有对象。
+```javascript
+// a.html：(www.domain1.com/a.html)
+<iframe id="iframe" src="http://www.domain2.com/b.html" style="display:none;"></iframe>
+<script>
+    var iframe = document.getElementById('iframe');
+    // 向b.html传hash值
+    setTimeout(function() {
+        iframe.src = iframe.src + '#user=admin';
+    }, 1000);
+    // 开放给同域c.html的回调方法
+    function onCallback(res) {
+        alert('data from c.html ---> ' + res);
+    }
+</script>
+
+// b.html：(www.domain2.com/b.html)
+<iframe id="iframe" src="http://www.domain1.com/c.html" style="display:none;"></iframe>
+<script>
+    var iframe = document.getElementById('iframe');
+
+    // 监听a.html传来的hash值，再传给c.html
+    window.onhashchange = function () {
+        iframe.src = iframe.src + location.hash;
+    };
+</script>
+
+// c.html：(www.domain1.com/c.html)
+<script>
+    // 监听b.html传来的hash值
+    window.onhashchange = function () {
+        // 再通过操作同域a.html的js回调，将结果传回
+        window.parent.parent.onCallback('hello: ' + location.hash.replace('#user=', ''));
+    };
+</script>
+```
 ### http-proxy
 ### nginx
 ### webscoket
