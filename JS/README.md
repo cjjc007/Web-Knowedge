@@ -20,7 +20,54 @@ ES10新增了一种基本数据类型：BigInt
 复杂数据类型只有一种: Object(数据是对象，函数是对象，正则表达式也是对象)  
 对象（Object）是引用类型，在使用过程中会遇到浅拷贝和深拷贝的问题。  
   
-null 不是一个对象，尽管 typeof null 输出的是 object，这是一个历史遗留问题，JS 的最初版本中使用的是 32 位系统，为了性能考虑使用低位存储变量的类型信息，000 开头代表是对象， null 表示为全零，所以将它错误的判断为 object 。另外，NaN 也属于 number 类型，并且 NaN 不等于自身。
+null 不是一个对象，尽管 typeof null 输出的是 object，这是一个历史遗留问题，JS 的最初版本中使用的是 32 位系统，为了性能考虑使用低位存储变量的类型信息，000 开头代表是对象， null 表示为全零，所以将它错误的判断为 object 。另外，NaN 也属于 number 类型，并且 NaN 不等于自身。  
+
+#### symbol：
+ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值。它是 JavaScript 语言的第七种数据类型，前六种是：undefined、null、布尔值（Boolean）、字符串（String）、数值（Number）、对象（Object）。  
+Symbol 值通过Symbol函数生成。  
+```javascript
+let s = Symbol();
+typeof s    //“symbol”，Symbol函数前不能使用new命令，否则会报错。这是因为生成的 Symbol 是一个原始类型的值，不是对象。
+
+let s1 = Symbol('foo');
+s1 // Symbol(foo)
+s1.toString() // "Symbol(foo)"   //加上参数，易于区分
+
+// 参数是对象
+const obj = {
+  toString() {
+    return 'abc';
+  }
+};
+const sym = Symbol(obj);
+sym // Symbol(abc)
+
+Symbol 值可以显式转为字符串，布尔值，不能转为数值/参与运算
+
+String(sym) // 'Symbol(My symbol)'
+sym.toString() // 'Symbol(My symbol)'
+!sym  // false
+"your symbol is " + sym
+// TypeError: can't convert symbol to string
+`your symbol is ${sym}`
+// TypeError: can't convert symbol to string
+
+// 方法：
+sym.description // "foo"
+Symbol.hasInstance
+方法，会被instanceof运算符调用。构造器对象用来识别一个对象是否是其实例
+Symbol.match
+方法，被String.prototype.match调用。正则表达式用来匹配字符串。
+Symbol.replace
+方法，被String.prototype.replace调用。正则表达式用来替换字符串中匹配的子串。
+Symbol.search
+方法，被String.prototype.search调用。正则表达式返回被匹配部分在字符串中的索引。
+Symbol.species
+函数值，为一个构造函数。用来创建派生对象。
+Symbol.split
+方法，被String.prototype.split调用。正则表达式来用分割字符串。
+```
+
 #### 基本数据类型和复杂数据类型的区别为:
 1、内存的分配不同  
 基本数据类型存储在栈中。  
