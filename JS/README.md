@@ -417,6 +417,35 @@ for ( let i=1; i<=5; i++) {
 	}, i*1000 );
 }
 ```
+闭包的应用比较典型是定义模块，我们将操作函数暴露给外部，而细节隐藏在模块内部
+```javascript
+function module() {
+	var arr = [];
+	function add(val) {
+		if (typeof val == 'number') {
+			arr.push(val);
+		}
+	}
+	function get(index) {
+		if (index < arr.length) {
+			return arr[index]
+		} else {
+			return null;
+		}
+	}
+	return {
+		add: add,
+		get: get
+	}
+}
+var mod1 = module();
+mod1.add(1);
+mod1.add(2);
+mod1.add('xxx');
+console.log(mod1.get(2));
+
+```
+
 ## 深浅拷贝
 ### 浅拷贝
 简单的赋值就是浅拷贝，因为对象和数组在赋值的时候都是引用传递，赋值的时候只是传递一个指针。
