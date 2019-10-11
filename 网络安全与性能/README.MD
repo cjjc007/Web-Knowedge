@@ -375,13 +375,34 @@ a先引用c，c把值放在window.name，把a引用的地址改成b
 ### http-proxy
 ### nginx
 ### webscoket
-WebSocket protocol是HTML5一种新的协议。它实现了浏览器与服务器全双工通信，同时允许跨域通讯。  
+WebSocket protocol是HTML5一种新的协议。它实现了浏览器与服务器全双工通信，同时允许跨域通讯。基于TCP协议，并复用了HTTP的握手通道。  
 HTTP协议是一个请求－响应协议，请求必须先由浏览器发给服务器，服务器才能响应这个请求，再把数据发送给浏览器。换句话说，浏览器不主动请求，服务器是没法主动发数据给浏览器的。  
 实际上HTTP协议是建立在TCP协议之上的，TCP协议本身就实现了全双工通信，但是HTTP协议的请求－应答机制限制了全双工通信。  
 #### 过程：  
-在JS中创建WebSocket后，会有一个HTTP请求发向浏览器以发起请求。  
-在取得服务器响应后，建立的连接会使用HTTP升级将HTTP协议转换为WebSocket协议。（切换协议会返回一个101的状态码）  
+在JS中创建WebSocket后，会有一个HTTP请求发向浏览器以发起请求，发起协议升级请求，采用HTTP1.1报文格式，且只支持get方法。  
+GET / HTTP/1.1  
+Host:  
+Origin:  
+Connection：Upgrade （升级协议）  
+Upgrade: webscoket （升级到webscoket协议）  
+Sec-webscoket-version: 13  
+Sec-webscoket-key: sxaxacdcdcs （与后端响应首部的Sec-webscoket-accept配套，防范意外/恶意连接）  
+  
+响应报文：（切换协议会返回一个101的状态码）  
+HTTP / 1.1 101 Switching Protocols  
+Connection:Upgrade  
+Upgrade:webscoket  
+Sec-webscoket-accept: sxsxasxaxasx  
+Sec-webscoket-accept是根据Sec-webscoket-key拼接一段字符串，再通过SHA1加密，转成base64字符串。  
+在取得服务器响应后，建立的连接会使用HTTP升级将HTTP协议转换为WebSocket协议。  
 WebScoket使用了自定义协议，所以URL与HTTP协议略有不同。未加密的连接为ws\://，而不是http\://。加密的连接为wss\://，而不是https\://  
+数据帧格式：  
+数据最小单位是帧，一个或多个帧组成一条信息。  
+发送端将信息切割发送，服务端接收完重新组合。  
+字段：  
+FIN：1比特，为1时表示最后一个分片；  
+RSV1,RSV2,RSV3:1比特....  
+opcode：数据类型 opcode=0\*1 表示文本类型；0\*0表示拼接到上一条数据；0\*9:服务端向客户端发生ping；0\*A:pong。  
 
 WebSocket是应用层协议，是TCP/IP协议的子集，通过HTTP/1.1协议的101状态码进行握手。也就是说，WebSocket协议的建立需要先借助HTTP协议，在服务器返回101状态码之后，就可以进行websocket全双工双向通信了，就没有HTTP协议什么事情了。  
 
